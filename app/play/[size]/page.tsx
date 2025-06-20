@@ -2,6 +2,8 @@
 
 import { useRouter, useParams } from "next/navigation";
 import { useState, useEffect, useRef } from "react";
+import Square from "@/components/Square";
+import ConfettiBurst, { type ConfettiParticle } from "@/components/ConfettiBurst";
 
 // Solution for 5x5 for animation
 const SOLUTIONS: Record<number, number[][]> = {
@@ -32,15 +34,6 @@ function getKnightMoves(pos: Position, boardSize: number): Position[] {
   );
 }
 
-type ConfettiParticle = {
-  left: number;
-  width: number;
-  height: number;
-  color: string;
-  opacity: number;
-  delay: number;
-  rotate: number;
-};
 
 const CONFETTI_COLORS = [
   "#635AA3",
@@ -305,43 +298,6 @@ export default function PlayPage() {
     }
   }, [hasWon, gameStarted, showVictory, isStuck, showFailure]);
 
-  function ConfettiBurst() {
-    return (
-      <div className="pointer-events-none absolute inset-0 z-40">
-        {confettiParticles.map((p, i) => (
-          <div
-            key={i}
-            className="absolute"
-            style={{
-              left: `${p.left}%`,
-              top: "25%",
-              animation: `confetti-burst 1.1s cubic-bezier(.61,1.04,.76,.78)`,
-              animationDelay: `${p.delay}s`,
-              rotate: `${p.rotate}deg`,
-            }}
-          >
-            <div
-              style={{
-                width: p.width,
-                height: p.height,
-                borderRadius: "60% 40% 40% 70%",
-                background: p.color,
-                opacity: p.opacity,
-                boxShadow: `0 1px 8px #0001`,
-              }}
-            />
-          </div>
-        ))}
-        <style>{`
-          @keyframes confetti-burst {
-            0% { transform: translateY(0) scale(1);}
-            60% { transform: translateY(-60px) scale(1.06) rotate(-16deg);}
-            100% { transform: translateY(120px) scale(0.88) rotate(13deg);}
-          }
-        `}</style>
-      </div>
-    );
-  }
 
   // Render
   return (
@@ -445,12 +401,6 @@ export default function PlayPage() {
                   moveNum = visited[row][col];
                   isVisited = moveNum > 0;
                 }
-                // Consistent color for all cells
-                const squareColor = isKnight
-                  ? "bg-[#635AA3] shadow-2xl"
-                  : isVisited
-                  ? "bg-[#DAAB79]/90"
-                  : "bg-[#faf8ff]";
                 // Valid move highlight
                 const isValidMove =
                   !showingSolution &&
@@ -464,21 +414,13 @@ export default function PlayPage() {
                 if (showFailure && !isVisited)
                   cellEffect = "animate-[failshake_0.4s]";
                 return (
-                  <button
+                  <Square
                     key={`${row}-${col}`}
-                    className={`
-                      relative w-[85px] h-[85px] rounded-xl border border-[#d8d1e7]/70 overflow-hidden
-                      flex flex-col items-center justify-center transition-all
-                      ${isValidMove ? "ring-2 ring-[#635AA3]/80 z-10" : ""}
-                      ${squareColor}
-                      ${cellEffect}
-                    `}
-                    style={{
-                      transition:
-                        "background 0.18s, box-shadow 0.16s, transform 0.18s",
-                      boxShadow: isKnight ? "0 8px 36px #635aa347" : "",
-                    }}
-                    tabIndex={0}
+                    isKnight={isKnight}
+                    moveNum={moveNum}
+                    isVisited={isVisited}
+                    isValidMove={isValidMove}
+                    cellEffect={cellEffect}
                     onClick={() => handleSquareClick(row, col)}
                     disabled={
                       (isVisited && !isKnight) ||
@@ -487,26 +429,11 @@ export default function PlayPage() {
                       showVictory ||
                       showFailure
                     }
-                  >
-                    {isKnight ? (
-                      <span className="flex flex-col items-center justify-center z-30 animate-hopknight pointer-events-none select-none">
-                        <span className="text-white text-4xl drop-shadow-2xl leading-none">
-                          ♞
-                        </span>
-                        <span className="text-[#fcbf49] text-lg font-extrabold -mt-1 drop-shadow-md leading-none">
-                          {moveNum}
-                        </span>
-                      </span>
-                    ) : isVisited ? (
-                      <span className="text-[#42310b] text-lg font-bold select-none">
-                        {moveNum}
-                      </span>
-                    ) : null}
-                  </button>
+                  />
                 );
               })
             )}
-            {confetti && <ConfettiBurst />}
+            {confetti && <ConfettiBurst particles={confettiParticles} />}
             {showVictory && (
               <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-40">
                 <span className="text-6xl animate-winpop">🎉</span>
