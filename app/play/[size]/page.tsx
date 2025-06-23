@@ -2,8 +2,10 @@
 
 import { useRouter, useParams } from "next/navigation";
 import { useState, useEffect, useRef } from "react";
-import Square from "@/components/Square";
-import ConfettiBurst, { type ConfettiParticle } from "@/components/ConfettiBurst";
+import type { ConfettiParticle } from "@/components/ConfettiBurst";
+import GameBoard, { type Position } from "@/components/play/GameBoard";
+import GameControls from "@/components/play/GameControls";
+import GameInfo from "@/components/play/GameInfo";
 
 // Solution for 5x5 for animation
 const SOLUTIONS: Record<number, number[][]> = {
@@ -16,7 +18,6 @@ const SOLUTIONS: Record<number, number[][]> = {
   ],
 };
 
-type Position = { row: number; col: number };
 
 function getKnightMoves(pos: Position, boardSize: number): Position[] {
   const moves = [
@@ -315,158 +316,42 @@ export default function PlayPage() {
       </div>
       <div className="flex flex-col items-center bg-white/95 rounded-3xl shadow-2xl p-6 sm:p-12 mt-2 max-w-fit border-[#e8e2d2] border-[2.5px]">
         {/* Controls */}
-        <div className="flex flex-wrap justify-center gap-3 mb-1">
-          <button
-            className="text-[#635AA3] hover:underline font-semibold"
-            onClick={() => router.push("/")}
-          >
-            Home
-          </button>
-          <button
-            className={`text-[#635AA3] font-semibold hover:underline ${
-              undoStack.length === 0 ? "opacity-40 cursor-not-allowed" : ""
-            }`}
-            onClick={handleUndo}
-            disabled={
-              undoStack.length === 0 ||
-              showingSolution ||
-              showVictory ||
-              showFailure
-            }
-            title="Undo"
-          >
-            Undo
-          </button>
-          <button
-            className={`text-[#635AA3] font-semibold hover:underline ${
-              redoStack.length === 0 ? "opacity-40 cursor-not-allowed" : ""
-            }`}
-            onClick={handleRedo}
-            disabled={
-              redoStack.length === 0 ||
-              showingSolution ||
-              showVictory ||
-              showFailure
-            }
-            title="Redo"
-          >
-            Redo
-          </button>
-          {boardSize === 5 && (
-            <button
-              className="text-[#635AA3] hover:underline font-semibold"
-              disabled={showingSolution}
-              onClick={handleShowSolution}
-            >
-              Show Solution
-            </button>
-          )}
-          <button
-            className="text-[#DAAB79] hover:underline font-semibold"
-            onClick={handleReset}
-          >
-            Reset
-          </button>
-        </div>
+        <GameControls
+          boardSize={boardSize}
+          undoDisabled={undoStack.length === 0}
+          redoDisabled={redoStack.length === 0}
+          showingSolution={showingSolution}
+          showVictory={showVictory}
+          showFailure={showFailure}
+          onUndo={handleUndo}
+          onRedo={handleRedo}
+          onShowSolution={handleShowSolution}
+          onReset={handleReset}
+        />
         {/* Board */}
-        <div
-          className="relative shadow-2xl rounded-3xl border-[2.5px] border-[#a593c7] bg-[#f5f2fa] flex justify-center items-center"
-          style={{
-            padding: 22,
-            margin: 8,
-            minWidth: boardSize * (CELL_SIZE + 8),
-            minHeight: boardSize * (CELL_SIZE + 8),
-            position: "relative",
-          }}
-        >
-          <div
-            className="grid"
-            style={{
-              gridTemplateColumns: `repeat(${boardSize}, ${CELL_SIZE}px)`,
-              gridTemplateRows: `repeat(${boardSize}, ${CELL_SIZE}px)`,
-              gap: "8px",
-              zIndex: 1,
-            }}
-          >
-            {Array.from({ length: boardSize }).map((_, row) =>
-              Array.from({ length: boardSize }).map((_, col) => {
-                let isKnight, moveNum, isVisited;
-                if (showingSolution && boardSize === 5) {
-                  const num = SOLUTIONS[5][row][col];
-                  moveNum = num <= solutionStep ? num : 0;
-                  isVisited = moveNum > 0;
-                  isKnight = moveNum === solutionStep;
-                } else {
-                  isKnight = knightPos?.row === row && knightPos?.col === col;
-                  moveNum = visited[row][col];
-                  isVisited = moveNum > 0;
-                }
-                // Valid move highlight
-                const isValidMove =
-                  !showingSolution &&
-                  !showVictory &&
-                  !showFailure &&
-                  validMoves.some((pos) => pos.row === row && pos.col === col);
-                // Animations
-                let cellEffect = "";
-                if (showVictory && isVisited)
-                  cellEffect = "animate-[victorypop_0.4s]";
-                if (showFailure && !isVisited)
-                  cellEffect = "animate-[failshake_0.4s]";
-                return (
-                  <Square
-                    key={`${row}-${col}`}
-                    isKnight={isKnight}
-                    moveNum={moveNum}
-                    isVisited={isVisited}
-                    isValidMove={isValidMove}
-                    cellEffect={cellEffect}
-                    onClick={() => handleSquareClick(row, col)}
-                    disabled={
-                      (isVisited && !isKnight) ||
-                      hasWon ||
-                      showingSolution ||
-                      showVictory ||
-                      showFailure
-                    }
-                  />
-                );
-              })
-            )}
-            {confetti && <ConfettiBurst particles={confettiParticles} />}
-            {showVictory && (
-              <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-40">
-                <span className="text-6xl animate-winpop">🎉</span>
-              </div>
-            )}
-            {showFailure && (
-              <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-40">
-                <span className="text-5xl animate-failshake text-[#635AA3]">
-                  😔
-                </span>
-              </div>
-            )}
-          </div>
-        </div>
+        <GameBoard
+          boardSize={boardSize}
+          cellSize={CELL_SIZE}
+          visited={visited}
+          knightPos={knightPos}
+          showingSolution={showingSolution}
+          solution={boardSize === 5 ? SOLUTIONS[5] : undefined}
+          solutionStep={solutionStep}
+          validMoves={validMoves}
+          showVictory={showVictory}
+          showFailure={showFailure}
+          confetti={confetti}
+          confettiParticles={confettiParticles}
+          onSquareClick={handleSquareClick}
+        />
         {/* Info text */}
-        <div className="mt-3 text-lg text-black font-semibold min-h-[32px]">
-          {showVictory ? (
-            <span className="text-green-600 animate-pulse">
-              🎉 You completed the Knight's Tour!
-            </span>
-          ) : showFailure ? (
-            <span className="text-[#635AA3] animate-failshake">
-              No more moves! Try again.
-            </span>
-          ) : !gameStarted ? (
-            <>Click any square to start!</>
-          ) : (
-            <>
-              Move: <span className="font-bold">{moveCount}</span> /{" "}
-              {boardSize * boardSize}
-            </>
-          )}
-        </div>
+        <GameInfo
+          showVictory={showVictory}
+          showFailure={showFailure}
+          gameStarted={gameStarted}
+          moveCount={moveCount}
+          boardSize={boardSize}
+        />
       </div>
       {/* Animations */}
       <style>
