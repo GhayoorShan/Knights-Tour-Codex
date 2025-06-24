@@ -44,13 +44,17 @@ export default function Square({
     >
       {isKnight ? (
         <span className="flex flex-col items-center justify-center z-30 animate-hopknight pointer-events-none select-none">
-          <span className="text-white text-4xl drop-shadow-2xl leading-none">♞</span>
+          <span className="text-white text-4xl drop-shadow-2xl leading-none">
+            ♞
+          </span>
           <span className="text-[#fcbf49] text-lg font-extrabold -mt-1 drop-shadow-md leading-none">
             {moveNum}
           </span>
         </span>
       ) : isVisited ? (
-        <span className="text-[#42310b] text-lg font-bold select-none">{moveNum}</span>
+        <span className="text-[#42310b] text-lg font-bold select-none">
+          {moveNum}
+        </span>
       ) : null}
     </button>
   );
