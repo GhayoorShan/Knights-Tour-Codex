@@ -78,6 +78,8 @@ export function useKnightsTour(boardSize: number, user: User | null) {
   const [startTime, setStartTime] = useState<number | null>(null);
   const [winTimeSeconds, setWinTimeSeconds] = useState<number>(0);
 
+  const [runSaved, setRunSaved] = useState(false);
+
   // --- Increment attempts on first move ---
   async function incrementAttempt() {
     if (!user) return;
@@ -156,7 +158,7 @@ export function useKnightsTour(boardSize: number, user: User | null) {
     if (!user || !hasWon) return;
     const finishTime = startTime ? Math.round((Date.now() - startTime) / 1000) : 0;
     setWinTimeSeconds(finishTime);
-
+  
     await supabase.from("leaderboard").insert([
       {
         user_id: user.user_id,
@@ -164,10 +166,19 @@ export function useKnightsTour(boardSize: number, user: User | null) {
         moves: moveCount,
         time_seconds: finishTime,
         board_size: boardSize,
-        attempts: attempts,
+        attempts: attempts, // This shows how many attempts needed to win THIS time
       },
     ]);
+  
+    // RESET attempts for this board size
+    await supabase
+      .from("attempts")
+      .update({ attempts: 0 })   // or 1, up to you
+      .eq("user_id", user.user_id)
+      .eq("board_size", boardSize);
+    setAttempts(0); // or setAttempts(1)
   }
+  
 
   function handleReset() {
     setKnightPos(null);
@@ -183,6 +194,7 @@ export function useKnightsTour(boardSize: number, user: User | null) {
     setKnightAnim(null);
     setConfetti(false);
     setStartTime(null);
+    setRunSaved(false); 
   }
 
   useEffect(() => {
@@ -260,10 +272,13 @@ export function useKnightsTour(boardSize: number, user: User | null) {
         rotate: (i * 11) % 360,
       }));
       setConfettiParticles(particles);
+  
       if (hasWon) {
         setShowVictory(true);
-        // Save leaderboard run when win detected!
-        saveRun();
+        if (!runSaved) {
+          saveRun();
+          setRunSaved(true); // <--- prevents multiple saves!
+        }
         setTimeout(() => setShowVictory(false), 1500);
       }
       if (isStuck) {
@@ -272,8 +287,7 @@ export function useKnightsTour(boardSize: number, user: User | null) {
       }
       setTimeout(() => setConfetti(false), 1400);
     }
-    // eslint-disable-next-line
-  }, [hasWon, gameStarted, showVictory, isStuck, showFailure]);
+  }, [hasWon, gameStarted, showVictory, isStuck, showFailure, runSaved, saveRun]);
 
   // --- When boardSize/user changes, load current attempts ---
   useEffect(() => {
