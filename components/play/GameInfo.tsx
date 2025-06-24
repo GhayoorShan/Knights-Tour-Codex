@@ -29,7 +29,7 @@ export default function GameInfo({
           🎉 You completed the Knight's Tour!
         </span>
       ) : showFailure ? (
-        <span className="text-[#635AA3] animate-failshake">
+        <span className="text-[var(--primary)] animate-failshake">
           No more moves! Try again.
         </span>
       ) : !gameStarted ? (

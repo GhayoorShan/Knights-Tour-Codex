@@ -36,7 +36,7 @@ export default function GameBoard({
 }: GameBoardProps) {
   return (
     <div
-      className="relative shadow-2xl rounded-3xl border-[2.5px] border-[#a593c7] bg-[#f5f2fa] flex justify-center items-center"
+      className="relative shadow-2xl rounded-3xl border-[2.5px] border-[var(--primary)]/30 bg-[var(--surface)] flex justify-center items-center"
       style={{
         padding: 22,
         margin: 8,
@@ -102,7 +102,7 @@ export default function GameBoard({
         )}
         {showFailure && (
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-40">
-            <span className="text-5xl animate-failshake text-[#635AA3]">😔</span>
+            <span className="text-5xl animate-failshake text-[var(--primary)]">😔</span>
           </div>
         )}
       </div>

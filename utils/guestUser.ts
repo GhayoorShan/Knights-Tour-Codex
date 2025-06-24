@@ -1,10 +1,10 @@
 import { v4 as uuidv4 } from "uuid";
 import { supabase } from "@/lib/supabase";
 
-export async function registerGuestUser(name: string) {
+export async function registerGuestUser(name: string): Promise<{ user_id: string; username: string }> {
   // Check localStorage first
-  let user_id = localStorage.getItem("guest_user_id");
-  let username = localStorage.getItem("guest_user_name");
+  let user_id: string | null = localStorage.getItem("guest_user_id");
+  const username = localStorage.getItem("guest_user_name");
 
   if (user_id && username) {
     // Optionally verify with DB here

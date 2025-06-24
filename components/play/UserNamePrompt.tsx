@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import React, { useState } from "react";
 import { registerGuestUser } from "@/utils/guestUser";
 
 export default function UserNamePrompt({
@@ -34,7 +34,7 @@ export default function UserNamePrompt({
           autoFocus
         />
         <button
-          className="bg-[#635AA3] text-white py-2 rounded font-semibold hover:bg-[#524690]"
+          className="bg-[var(--primary)] text-white py-2 rounded font-semibold hover:brightness-110"
           disabled={loading}
         >
           {loading ? "Registering..." : "Start Playing"}
