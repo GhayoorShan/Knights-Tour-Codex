@@ -66,7 +66,7 @@ export function useKnightsTour(boardSize: number, user: User | null) {
   const [showFailure, setShowFailure] = useState(false);
 
   const [knightAnim, setKnightAnim] = useState<{ row: number; col: number } | null>(null);
-  const animTimeout = useRef<NodeJS.Timeout | null>(null);
+  const animTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const [confetti, setConfetti] = useState(false);
   const [confettiParticles, setConfettiParticles] = useState<ConfettiParticle[]>([]);

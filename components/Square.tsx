@@ -20,17 +20,17 @@ export default function Square({
   disabled,
 }: SquareProps) {
   const squareColor = isKnight
-    ? "bg-[#635AA3] shadow-2xl"
+    ? "bg-[var(--primary)] shadow-2xl"
     : isVisited
-    ? "bg-[#DAAB79]/90"
-    : "bg-[#faf8ff]";
+    ? "bg-[var(--secondary)]/90"
+    : "bg-[var(--surface)]";
 
   return (
     <button
       className={`
-        relative w-[85px] h-[85px] rounded-xl border border-[#d8d1e7]/70 overflow-hidden
+        relative w-[85px] h-[85px] rounded-xl border border-[var(--primary)]/30 overflow-hidden
         flex flex-col items-center justify-center transition-all
-        ${isValidMove ? "ring-2 ring-[#635AA3]/80 z-10" : ""}
+        ${isValidMove ? "ring-2 ring-[var(--primary)]/80 z-10" : ""}
         ${squareColor}
         ${cellEffect}
       `}

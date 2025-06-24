@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import React, { useState } from "react";
 
 const BOARD_SIZES = [5, 6, 7, 8];
 
@@ -15,13 +15,13 @@ export default function HomePage() {
   }
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center bg-gray-100">
-      <h1 className="text-4xl font-bold mb-8 text-[#635AA3]">
+    <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-br from-[var(--surface)] to-white">
+      <h1 className="text-4xl font-bold mb-8 text-[var(--primary)]">
         Knight's Tour Challenge
       </h1>
       <form
         onSubmit={handleSubmit}
-        className="bg-white rounded-2xl shadow-md p-8 flex flex-col items-center gap-4"
+        className="bg-white/90 rounded-2xl border border-[var(--primary)]/20 shadow-lg p-8 flex flex-col items-center gap-4"
       >
         <label htmlFor="size" className="font-medium text-lg text-black">
           Choose Board Size:
@@ -40,7 +40,7 @@ export default function HomePage() {
         </select>
         <button
           type="submit"
-          className="bg-[#635AA3] text-white px-8 py-2 rounded-xl font-semibold mt-4 hover:bg-[#4b437b] transition"
+          className="bg-[var(--primary)] text-white px-8 py-2 rounded-xl font-semibold mt-4 hover:brightness-110 transition"
         >
           Start Game
         </button>
