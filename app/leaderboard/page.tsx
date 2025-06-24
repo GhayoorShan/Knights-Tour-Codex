@@ -22,11 +22,11 @@ export default function LeaderboardPage() {
   }, []);
 
   return (
-    <main className="flex min-h-screen flex-col items-center bg-[#f7f5fa] text-black">
-      <h1 className="text-4xl font-bold mt-10 mb-6 text-[#635AA3]">
+    <main className="flex min-h-screen flex-col items-center bg-gradient-to-br from-[var(--surface)] to-white text-black">
+      <h1 className="text-4xl font-bold mt-10 mb-6 text-[--primary]">
         🏆 Leaderboard
       </h1>
-      <div className="bg-white rounded-2xl shadow-md p-8 w-full max-w-2xl">
+      <div className="bg-white/90 rounded-2xl border border-[color:var(--primary)/0.2] shadow-lg p-8 w-full max-w-2xl">
         <table className="w-full text-lg">
           <thead>
             <tr className="text-left border-b">
