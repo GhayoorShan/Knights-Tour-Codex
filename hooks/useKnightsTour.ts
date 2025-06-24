@@ -1,7 +1,12 @@
+"use client";
+
 import { useEffect, useRef, useState } from "react";
+import { supabase } from "@/lib/supabase";
 import type { ConfettiParticle } from "@/components/ConfettiBurst";
 import type { Position } from "@/components/play/GameBoard";
+import type { User } from "./useUser";
 
+// Example solutions (add more if needed)
 export const SOLUTIONS: Record<number, number[][]> = {
   5: [
     [1, 20, 9, 14, 3],
@@ -39,7 +44,7 @@ function getKnightMoves(pos: Position, boardSize: number): Position[] {
   );
 }
 
-export function useKnightsTour(boardSize: number) {
+export function useKnightsTour(boardSize: number, user: User | null) {
   const [knightPos, setKnightPos] = useState<Position | null>(null);
   const [visited, setVisited] = useState<number[][]>(
     Array.from({ length: boardSize }, () => Array(boardSize).fill(0))
@@ -66,48 +71,43 @@ export function useKnightsTour(boardSize: number) {
   const [confetti, setConfetti] = useState(false);
   const [confettiParticles, setConfettiParticles] = useState<ConfettiParticle[]>([]);
 
-  let validMoves: Position[] = [];
-  if (knightPos && gameStarted && !showVictory && !showFailure && !showingSolution) {
-    validMoves = getKnightMoves(knightPos, boardSize).filter(
-      (pos) => visited[pos.row][pos.col] === 0
-    );
+  // --- Attempts state ---
+  const [attempts, setAttempts] = useState<number>(1); // defaults to 1 if not loaded
+
+  // --- Timer for win time (seconds) ---
+  const [startTime, setStartTime] = useState<number | null>(null);
+  const [winTimeSeconds, setWinTimeSeconds] = useState<number>(0);
+
+  // --- Increment attempts on first move ---
+  async function incrementAttempt() {
+    if (!user) return;
+    let { data, error } = await supabase
+      .from("attempts")
+      .select("attempts")
+      .eq("user_id", user.user_id)
+      .eq("board_size", boardSize)
+      .maybeSingle();
+
+    if (!data) {
+      const { data: insertData } = await supabase
+        .from("attempts")
+        .insert([{ user_id: user.user_id, board_size: boardSize, attempts: 1 }])
+        .select()
+        .single();
+      setAttempts(1);
+    } else {
+      const { data: updateData } = await supabase
+        .from("attempts")
+        .update({ attempts: data.attempts + 1 })
+        .eq("user_id", user.user_id)
+        .eq("board_size", boardSize)
+        .select()
+        .single();
+      setAttempts((updateData?.attempts ?? data.attempts + 1));
+    }
   }
 
-  const hasWon = visited.flat().every((num) => num > 0);
-  const isStuck = gameStarted && !hasWon && validMoves.length === 0;
-
-  function handleUndo() {
-    if (undoStack.length === 0) return;
-    const lastState = undoStack[undoStack.length - 1];
-    setRedoStack((prev) => [
-      ...prev.slice(-2),
-      { knight: knightPos, visited: visited.map((arr) => [...arr]), moveCount },
-    ]);
-    setKnightAnim(knightPos);
-    setTimeout(() => {
-      setKnightPos(lastState.knight);
-      setVisited(lastState.visited.map((arr) => [...arr]));
-      setMoveCount(lastState.moveCount);
-      setUndoStack((prev) => prev.slice(0, -1));
-    }, 160);
-  }
-
-  function handleRedo() {
-    if (redoStack.length === 0) return;
-    const nextState = redoStack[redoStack.length - 1];
-    setUndoStack((prev) => [
-      ...prev.slice(-2),
-      { knight: knightPos, visited: visited.map((arr) => [...arr]), moveCount },
-    ]);
-    setKnightAnim(nextState.knight);
-    setTimeout(() => {
-      setKnightPos(nextState.knight);
-      setVisited(nextState.visited.map((arr) => [...arr]));
-      setMoveCount(nextState.moveCount);
-      setRedoStack((prev) => prev.slice(0, -1));
-    }, 160);
-  }
-
+  // --- Call incrementAttempt on FIRST move ---
   function handleSquareClick(row: number, col: number) {
     if (showingSolution || showVictory || showFailure) return;
     if (!gameStarted) {
@@ -123,6 +123,8 @@ export function useKnightsTour(boardSize: number) {
         });
         setGameStarted(true);
         setMoveCount(1);
+        setStartTime(Date.now());
+        incrementAttempt();
       }, 160);
     } else if (knightPos) {
       const validMoves = getKnightMoves(knightPos, boardSize).filter(
@@ -149,6 +151,24 @@ export function useKnightsTour(boardSize: number) {
     }
   }
 
+  // --- Save completed run to leaderboard (call after win) ---
+  async function saveRun() {
+    if (!user || !hasWon) return;
+    const finishTime = startTime ? Math.round((Date.now() - startTime) / 1000) : 0;
+    setWinTimeSeconds(finishTime);
+
+    await supabase.from("leaderboard").insert([
+      {
+        user_id: user.user_id,
+        name: user.username,
+        moves: moveCount,
+        time_seconds: finishTime,
+        board_size: boardSize,
+        attempts: attempts,
+      },
+    ]);
+  }
+
   function handleReset() {
     setKnightPos(null);
     setVisited(Array.from({ length: boardSize }, () => Array(boardSize).fill(0)));
@@ -162,6 +182,7 @@ export function useKnightsTour(boardSize: number) {
     setRedoStack([]);
     setKnightAnim(null);
     setConfetti(false);
+    setStartTime(null);
   }
 
   useEffect(() => {
@@ -189,8 +210,10 @@ export function useKnightsTour(boardSize: number) {
     setRedoStack([]);
     setKnightAnim(null);
     setConfetti(false);
+    setStartTime(null);
   }
 
+  // --- Animate solution knight ---
   useEffect(() => {
     if (
       showingSolution &&
@@ -214,6 +237,16 @@ export function useKnightsTour(boardSize: number) {
     }
   }, [showingSolution, solutionStep, boardSize]);
 
+  // --- Confetti and win/fail animations ---
+  const hasWon = visited.flat().every((num) => num > 0);
+  const validMoves: Position[] =
+    knightPos && gameStarted && !showVictory && !showFailure && !showingSolution
+      ? getKnightMoves(knightPos, boardSize).filter(
+          (pos) => visited[pos.row][pos.col] === 0
+        )
+      : [];
+  const isStuck = gameStarted && !hasWon && validMoves.length === 0;
+
   useEffect(() => {
     if ((hasWon && gameStarted && !showVictory) || (isStuck && !showFailure)) {
       setConfetti(true);
@@ -229,6 +262,8 @@ export function useKnightsTour(boardSize: number) {
       setConfettiParticles(particles);
       if (hasWon) {
         setShowVictory(true);
+        // Save leaderboard run when win detected!
+        saveRun();
         setTimeout(() => setShowVictory(false), 1500);
       }
       if (isStuck) {
@@ -237,7 +272,57 @@ export function useKnightsTour(boardSize: number) {
       }
       setTimeout(() => setConfetti(false), 1400);
     }
+    // eslint-disable-next-line
   }, [hasWon, gameStarted, showVictory, isStuck, showFailure]);
+
+  // --- When boardSize/user changes, load current attempts ---
+  useEffect(() => {
+    async function fetchAttempts() {
+      if (!user) return;
+      let { data } = await supabase
+        .from("attempts")
+        .select("attempts")
+        .eq("user_id", user.user_id)
+        .eq("board_size", boardSize)
+        .single();
+      setAttempts(data?.attempts || 1);
+    }
+    fetchAttempts();
+    // eslint-disable-next-line
+  }, [boardSize, user?.user_id]);
+
+  function handleUndo() {
+    if (undoStack.length === 0) return;
+    const lastState = undoStack[undoStack.length - 1];
+    setRedoStack((prev) => [
+      ...prev.slice(-2),
+      { knight: knightPos, visited: visited.map((arr) => [...arr]), moveCount },
+    ]);
+    setKnightAnim(knightPos);
+    setTimeout(() => {
+      setKnightPos(lastState.knight);
+      setVisited(lastState.visited.map((arr) => [...arr]));
+      setMoveCount(lastState.moveCount);
+      setUndoStack((prev) => prev.slice(0, -1));
+    }, 160);
+  }
+  
+  function handleRedo() {
+    if (redoStack.length === 0) return;
+    const nextState = redoStack[redoStack.length - 1];
+    setUndoStack((prev) => [
+      ...prev.slice(-2),
+      { knight: knightPos, visited: visited.map((arr) => [...arr]), moveCount },
+    ]);
+    setKnightAnim(nextState.knight);
+    setTimeout(() => {
+      setKnightPos(nextState.knight);
+      setVisited(nextState.visited.map((arr) => [...arr]));
+      setMoveCount(nextState.moveCount);
+      setRedoStack((prev) => prev.slice(0, -1));
+    }, 160);
+  }
+  
 
   return {
     knightPos,
@@ -258,6 +343,8 @@ export function useKnightsTour(boardSize: number) {
     handleSquareClick,
     handleShowSolution,
     handleReset,
+    attempts,
+    winTimeSeconds,
+    saveRun,
   };
 }
-

@@ -9,11 +9,10 @@ export default function HomePage() {
   const router = useRouter();
   const [size, setSize] = useState<number>(BOARD_SIZES[0]);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    // Route to /play/{size}x{size}
     router.push(`/play/${size}x${size}`);
-  };
+  }
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center bg-gray-100">

@@ -1,15 +1,23 @@
 "use client";
 
-import { useRouter, useParams } from "next/navigation";
+import { useParams } from "next/navigation";
+import { useState, useEffect } from "react";
 import GameBoard from "@/components/play/GameBoard";
 import GameControls from "@/components/play/GameControls";
 import GameInfo from "@/components/play/GameInfo";
+import UserNamePrompt from "@/components/play/UserNamePrompt";
 import { useKnightsTour, SOLUTIONS } from "@/hooks/useKnightsTour";
-
+import { useUser } from "@/hooks/useUser";
 
 export default function PlayPage() {
   const params = useParams<{ size: string }>();
-  const router = useRouter();
+  const [usernamePrompt, setUsernamePrompt] = useState(false);
+  const { user, setUsername } = useUser();
+
+  useEffect(() => {
+    if (!user || !user.username) setUsernamePrompt(true);
+    else setUsernamePrompt(false);
+  }, [user]);
 
   if (!params.size) {
     return (
@@ -21,7 +29,7 @@ export default function PlayPage() {
 
   const [rows, cols] = params.size.split("x").map((n) => parseInt(n, 10));
   const boardSize = rows;
-  const CELL_SIZE = 85; // Medium-sized board
+  const CELL_SIZE = 85;
 
   const {
     knightPos,
@@ -42,10 +50,15 @@ export default function PlayPage() {
     handleSquareClick,
     handleShowSolution,
     handleReset,
-  } = useKnightsTour(boardSize);
+    attempts,
+    winTimeSeconds,
+    saveRun,
+  } = useKnightsTour(boardSize, user);
 
+  if (usernamePrompt) {
+    return <UserNamePrompt onSave={(user) => setUsername(user.username)} />;
+  }
 
-  // Render
   return (
     <main className="min-h-screen bg-gradient-to-br from-[#e4dbe8] via-[#faf7ef] to-[#dfd2c2] flex flex-col items-center py-0">
       {/* Header / Banner */}
@@ -60,7 +73,6 @@ export default function PlayPage() {
         </div>
       </div>
       <div className="flex flex-col items-center bg-white/95 rounded-3xl shadow-2xl p-6 sm:p-12 mt-2 max-w-fit border-[#e8e2d2] border-[2.5px]">
-        {/* Controls */}
         <GameControls
           boardSize={boardSize}
           undoDisabled={undoDisabled}
@@ -73,7 +85,6 @@ export default function PlayPage() {
           onShowSolution={handleShowSolution}
           onReset={handleReset}
         />
-        {/* Board */}
         <GameBoard
           boardSize={boardSize}
           cellSize={CELL_SIZE}
@@ -89,16 +100,17 @@ export default function PlayPage() {
           confettiParticles={confettiParticles}
           onSquareClick={handleSquareClick}
         />
-        {/* Info text */}
         <GameInfo
           showVictory={showVictory}
           showFailure={showFailure}
           gameStarted={gameStarted}
           moveCount={moveCount}
           boardSize={boardSize}
+          attempts={attempts}
+          user={user}
+          winTimeSeconds={winTimeSeconds}
         />
       </div>
-      {/* Animations */}
       <style>
         {`
         @keyframes victorypop {
@@ -106,17 +118,14 @@ export default function PlayPage() {
           50% { transform: scale(1.12) rotate(6deg); background: #e1ffd4; }
           100% { transform: scale(1) rotate(0);}
         }
-        .animate-[victorypop_0.4s] {
-          animation: victorypop 0.38s;
+        .animate-[victorypop_0.4s] { animation: victorypop 0.38s; }
+        @keyframes failshake {
+          10%, 90% { transform: translateX(-1px); }
+          20%, 80% { transform: translateX(2px); }
+          30%, 50%, 70% { transform: translateX(-4px); }
+          40%, 60% { transform: translateX(4px); }
         }
-      @keyframes failshake { ... }
-.animate-[failshake_0.4s], .animate-failshake {
-  animation: failshake 0.38s;
-}
-
-        .animate-[failshake_0.4s], .animate-failshake {
-          animation: failshake 0.38s;
-        }
+        .animate-[failshake_0.4s], .animate-failshake { animation: failshake 0.38s; }
         @keyframes winpop {
           0%   { transform: scale(0.5) rotate(-14deg);}
           45%  { transform: scale(1.2) rotate(13deg);}
