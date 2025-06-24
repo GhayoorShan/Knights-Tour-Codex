@@ -1,5 +1,7 @@
 import Square from "@/components/Square";
-import ConfettiBurst, { type ConfettiParticle } from "@/components/ConfettiBurst";
+import ConfettiBurst, {
+  type ConfettiParticle,
+} from "@/components/ConfettiBurst";
 
 export type Position = { row: number; col: number };
 
@@ -36,7 +38,7 @@ export default function GameBoard({
 }: GameBoardProps) {
   return (
     <div
-      className="relative shadow-2xl rounded-3xl border-[2.5px] border-[color:var(--primary)/0.3] bg-[--board-bg] flex justify-center items-center"
+      className="relative shadow-2xl rounded-3xl border-[2.5px] border-[var(--primary)]/30 bg-[var(--surface)] flex justify-center items-center"
       style={{
         padding: 22,
         margin: 8,
@@ -73,8 +75,10 @@ export default function GameBoard({
               !showFailure &&
               validMoves.some((pos) => pos.row === row && pos.col === col);
             let cellEffect = "";
-            if (showVictory && isVisited) cellEffect = "animate-[victorypop_0.4s]";
-            if (showFailure && !isVisited) cellEffect = "animate-[failshake_0.4s]";
+            if (showVictory && isVisited)
+              cellEffect = "animate-[victorypop_0.4s]";
+            if (showFailure && !isVisited)
+              cellEffect = "animate-[failshake_0.4s]";
             return (
               <Square
                 key={`${row}-${col}`}
@@ -102,7 +106,9 @@ export default function GameBoard({
         )}
         {showFailure && (
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-40">
-            <span className="text-5xl animate-failshake text-[--primary]">😔</span>
+            <span className="text-5xl animate-failshake text-[var(--primary)]">
+              😔
+            </span>
           </div>
         )}
       </div>

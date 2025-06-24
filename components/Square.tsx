@@ -20,17 +20,17 @@ export default function Square({
   disabled,
 }: SquareProps) {
   const squareColor = isKnight
-    ? "bg-[--primary] shadow-2xl"
+    ? "bg-[var(--primary)] shadow-2xl"
     : isVisited
-    ? "bg-[color:var(--secondary)/0.9]"
-    : "bg-[--square-bg]";
+    ? "bg-[var(--secondary)]/90"
+    : "bg-[var(--surface)]";
 
   return (
     <button
       className={`
-        relative w-[85px] h-[85px] rounded-xl border border-[color:var(--primary)/0.3] overflow-hidden
+        relative w-[85px] h-[85px] rounded-xl border border-[var(--primary)]/30 overflow-hidden
         flex flex-col items-center justify-center transition-all
-        ${isValidMove ? "ring-2 ring-[color:var(--primary)/0.8] z-10" : ""}
+        ${isValidMove ? "ring-2 ring-[var(--primary)]/80 z-10" : ""}
         ${squareColor}
         ${cellEffect}
       `}
@@ -44,13 +44,17 @@ export default function Square({
     >
       {isKnight ? (
         <span className="flex flex-col items-center justify-center z-30 animate-hopknight pointer-events-none select-none">
-          <span className="text-white text-4xl drop-shadow-2xl leading-none">♞</span>
+          <span className="text-white text-4xl drop-shadow-2xl leading-none">
+            ♞
+          </span>
           <span className="text-[#fcbf49] text-lg font-extrabold -mt-1 drop-shadow-md leading-none">
             {moveNum}
           </span>
         </span>
       ) : isVisited ? (
-        <span className="text-[#42310b] text-lg font-bold select-none">{moveNum}</span>
+        <span className="text-[#42310b] text-lg font-bold select-none">
+          {moveNum}
+        </span>
       ) : null}
     </button>
   );

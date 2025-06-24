@@ -64,9 +64,9 @@ export default function PlayPage() {
     <main className="min-h-screen bg-gradient-to-br from-[var(--surface)] to-white flex flex-col items-center py-0">
       {/* Header / Banner */}
 
-      <div className="relative w-full flex flex-col items-center bg-[--primary] text-white py-6 shadow-md mb-8 rounded-b-3xl">
+      <div className="relative w-full flex flex-col items-center bg-[var(--primary)] text-white py-6 shadow-md mb-8 rounded-b-3xl">
         <div className="text-center flex flex-col items-center gap-1">
-          <span className="font-bold text-2xl sm:text-4xl tracking-tight text-[--secondary] drop-shadow-xl">
+          <span className="font-bold text-2xl sm:text-4xl tracking-tight text-[var(--secondary)] drop-shadow-xl">
             ♞ Knight's Tour Challenge
           </span>
           <span className="mt-1 text-base sm:text-lg opacity-85 font-medium">
@@ -75,14 +75,14 @@ export default function PlayPage() {
         </div>
         <Link
           href="/leaderboard"
-          className="absolute right-6 top-1/2 -translate-y-1/2 bg-[--secondary] text-[#1a191f] font-semibold px-5 py-2 rounded-xl shadow hover:brightness-110 transition text-base sm:text-lg"
+          className="absolute right-6 top-1/2 -translate-y-1/2 bg-[var(--secondary)] text-[#1a191f] font-semibold px-5 py-2 rounded-xl shadow hover:brightness-110 transition text-base sm:text-lg"
           style={{ minWidth: 140, textAlign: "center" }}
         >
           🏆 Leaderboard
         </Link>
       </div>
 
-      <div className="flex flex-col items-center bg-white/95 rounded-3xl shadow-2xl p-6 sm:p-12 mt-2 max-w-fit border-[color:var(--primary)/0.2] border-[2.5px]">
+      <div className="flex flex-col items-center bg-white/95 rounded-3xl shadow-2xl p-6 sm:p-12 mt-2 max-w-fit border-[var(--primary)]/20 border-[2.5px]">
         <GameControls
           boardSize={boardSize}
           undoDisabled={undoDisabled}

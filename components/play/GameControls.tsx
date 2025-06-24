@@ -29,13 +29,13 @@ export default function GameControls({
   return (
     <div className="flex flex-wrap justify-center gap-3 mb-1">
       <button
-        className="px-4 py-1 rounded-md bg-[--primary] text-white font-semibold shadow hover:brightness-110"
+        className="px-4 py-1 rounded-md bg-[var(--primary)] text-white font-semibold hover:brightness-110"
         onClick={() => router.push("/")}
       >
         Home
       </button>
       <button
-        className={`px-4 py-1 rounded-md bg-[--primary] text-white font-semibold shadow hover:brightness-110 ${
+        className={`px-4 py-1 rounded-md bg-[var(--primary)] text-white font-semibold hover:brightness-110 ${
           undoDisabled ? "opacity-40 cursor-not-allowed" : ""
         }`}
         onClick={onUndo}
@@ -45,7 +45,7 @@ export default function GameControls({
         Undo
       </button>
       <button
-        className={`px-4 py-1 rounded-md bg-[--primary] text-white font-semibold shadow hover:brightness-110 ${
+        className={`px-4 py-1 rounded-md bg-[var(--primary)] text-white font-semibold hover:brightness-110 ${
           redoDisabled ? "opacity-40 cursor-not-allowed" : ""
         }`}
         onClick={onRedo}
@@ -56,7 +56,7 @@ export default function GameControls({
       </button>
       {boardSize === 5 && (
         <button
-          className="px-4 py-1 rounded-md bg-[--primary] text-white font-semibold shadow hover:brightness-110"
+          className="px-4 py-1 rounded-md bg-[var(--primary)] text-white font-semibold hover:brightness-110"
           disabled={showingSolution}
           onClick={onShowSolution}
         >
@@ -64,7 +64,7 @@ export default function GameControls({
         </button>
       )}
       <button
-        className="px-4 py-1 rounded-md bg-[--secondary] text-[#1a191f] font-semibold shadow hover:brightness-110"
+        className="px-4 py-1 rounded-md bg-[var(--secondary)] text-[#1a191f] font-semibold hover:brightness-110"
         onClick={onReset}
       >
         Reset

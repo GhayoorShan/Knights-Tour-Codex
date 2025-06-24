@@ -6,8 +6,6 @@
   --primary: #635AA3;
   --secondary: #DAAB79;
   --surface: #faf8ff;
-  --board-bg: #e0dcff;
-  --square-bg: #f7f5ff;
 }
 
 @theme inline {
@@ -22,8 +20,6 @@
     --background: #0a0a0a;
     --foreground: #ededed;
     --surface: #1a1a1a;
-    --board-bg: #202023;
-    --square-bg: #2e2f33;
   }
 }
 

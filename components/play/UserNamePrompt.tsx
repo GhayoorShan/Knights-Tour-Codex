@@ -34,7 +34,7 @@ export default function UserNamePrompt({
           autoFocus
         />
         <button
-          className="bg-[--primary] text-white py-2 rounded font-semibold shadow hover:brightness-110"
+          className="bg-[var(--primary)] text-white py-2 rounded font-semibold hover:brightness-110"
           disabled={loading}
         >
           {loading ? "Registering..." : "Start Playing"}
