@@ -61,7 +61,7 @@ export default function PlayPage() {
   }
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-[var(--surface)] to-white flex flex-col items-center py-0">
+    <main className="min-h-screen bg-gradient-to-br from-[var(--surface)] to-[var(--background)] flex flex-col items-center py-0">
       {/* Header / Banner */}
 
       <div className="relative w-full flex flex-col items-center bg-[var(--primary)] text-white py-6 shadow-md mb-8 rounded-b-3xl">
@@ -75,7 +75,7 @@ export default function PlayPage() {
         </div>
         <Link
           href="/leaderboard"
-          className="absolute right-6 top-1/2 -translate-y-1/2 bg-[var(--secondary)] text-[#1a191f] font-semibold px-5 py-2 rounded-xl shadow hover:brightness-110 transition text-base sm:text-lg"
+          className="absolute right-6 top-1/2 -translate-y-1/2 bg-[var(--secondary)] text-[var(--background)] font-semibold px-5 py-2 rounded-xl shadow hover:brightness-110 transition text-base sm:text-lg"
           style={{ minWidth: 140, textAlign: "center" }}
         >
           🏆 Leaderboard
@@ -124,8 +124,8 @@ export default function PlayPage() {
       <style>
         {`
         @keyframes victorypop {
-          0% { transform: scale(0.8) rotate(-8deg); background: #ffe19f; }
-          50% { transform: scale(1.12) rotate(6deg); background: #e1ffd4; }
+          0% { transform: scale(0.8) rotate(-8deg); background: #fbbf24; }
+          50% { transform: scale(1.12) rotate(6deg); background: #86efac; }
           100% { transform: scale(1) rotate(0);}
         }
         .animate-[victorypop_0.4s] { animation: victorypop 0.38s; }
@@ -144,8 +144,8 @@ export default function PlayPage() {
         }
         .animate-winpop { animation: winpop 1.18s;}
         @keyframes hopknight {
-          0% { transform: translateY(0) scale(1); filter: drop-shadow(0 1px 16px #b9a6f9aa);}
-          32% { transform: translateY(-18px) scale(1.12); filter: drop-shadow(0 8px 22px #7267c6);}
+          0% { transform: translateY(0) scale(1); filter: drop-shadow(0 1px 16px #c084fcaa);}
+          32% { transform: translateY(-18px) scale(1.12); filter: drop-shadow(0 8px 22px #7c3aed);}
           80% { transform: translateY(1px) scale(1.04);}
           100% { transform: translateY(0) scale(1);}
         }

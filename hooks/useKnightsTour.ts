@@ -18,14 +18,14 @@ export const SOLUTIONS: Record<number, number[][]> = {
 };
 
 const CONFETTI_COLORS = [
-  "#635AA3",
-  "#DAAB79",
-  "#fff",
-  "#8d88be",
-  "#e9798c",
-  "#4CC9F0",
-  "#fcbf49",
-  "#4895ef",
+  "#8b5cf6",
+  "#fbbf24",
+  "#ffffff",
+  "#4f46e5",
+  "#f472b6",
+  "#22d3ee",
+  "#4ade80",
+  "#64748b",
 ];
 
 function getKnightMoves(pos: Position, boardSize: number): Position[] {

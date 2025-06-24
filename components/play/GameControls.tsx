@@ -64,7 +64,7 @@ export default function GameControls({
         </button>
       )}
       <button
-        className="px-4 py-1 rounded-md bg-[var(--secondary)] text-[#1a191f] font-semibold hover:brightness-110"
+        className="px-4 py-1 rounded-md bg-[var(--secondary)] text-[var(--background)] font-semibold hover:brightness-110"
         onClick={onReset}
       >
         Reset

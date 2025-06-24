@@ -36,7 +36,7 @@ export default function Square({
       `}
       style={{
         transition: "background 0.18s, box-shadow 0.16s, transform 0.18s",
-        boxShadow: isKnight ? "0 8px 36px #635aa347" : "",
+        boxShadow: isKnight ? "0 8px 36px #8b5cf647" : "",
       }}
       tabIndex={0}
       onClick={onClick}
@@ -45,12 +45,12 @@ export default function Square({
       {isKnight ? (
         <span className="flex flex-col items-center justify-center z-30 animate-hopknight pointer-events-none select-none">
           <span className="text-white text-4xl drop-shadow-2xl leading-none">♞</span>
-          <span className="text-[#fcbf49] text-lg font-extrabold -mt-1 drop-shadow-md leading-none">
+          <span className="text-[var(--secondary)] text-lg font-extrabold -mt-1 drop-shadow-md leading-none">
             {moveNum}
           </span>
         </span>
       ) : isVisited ? (
-        <span className="text-[#42310b] text-lg font-bold select-none">{moveNum}</span>
+        <span className="text-[var(--background)] text-lg font-bold select-none">{moveNum}</span>
       ) : null}
     </button>
   );
