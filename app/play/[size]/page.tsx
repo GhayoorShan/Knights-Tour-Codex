@@ -75,7 +75,7 @@ export default function PlayPage() {
         </div>
         <Link
           href="/leaderboard"
-          className="absolute right-6 top-1/2 -translate-y-1/2 bg-[var(--secondary)] text-[var(--background)] font-semibold px-5 py-2 rounded-xl shadow hover:brightness-110 transition text-base sm:text-lg"
+          className="absolute right-6 top-1/2 -translate-y-1/2 bg-[var(--secondary)] text-[var(--foreground)] font-semibold px-5 py-2 rounded-xl shadow hover:brightness-110 transition text-base sm:text-lg"
           style={{ minWidth: 140, textAlign: "center" }}
         >
           🏆 Leaderboard
