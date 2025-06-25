@@ -64,7 +64,7 @@ export default function Square({
         </span>
       ) : isVisited ? (
 
-        <span className="text-[var(--background)] text-lg font-bold select-none">{moveNum}</span>
+        <span className="text-[var(--foreground)] text-lg font-bold select-none">{moveNum}</span>
 
       ) : null}
     </button>

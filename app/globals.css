@@ -6,8 +6,9 @@
   --primary: #C8F0E6;
   --secondary: #E9E5FF;
   --surface: #F4F5F7;
+  /* Unified board colors for consistent appearance */
   --board-light: #F4F5F7;
-  --board-dark: #E8F2FF;
+  --board-dark: #F4F5F7;
   --success: #FFE3C4;
   --error: #FFD8DC;
 }
