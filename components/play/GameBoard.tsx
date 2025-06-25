@@ -38,13 +38,15 @@ export default function GameBoard({
 }: GameBoardProps) {
   return (
     <div
-      className="relative shadow-2xl rounded-3xl border-[2.5px] border-[var(--primary)]/30 bg-[var(--surface)] flex justify-center items-center"
+      className="relative rounded-3xl border-[2.5px] border-[var(--primary)]/30 bg-[var(--surface)] flex justify-center items-center"
       style={{
         padding: 22,
         margin: 8,
         minWidth: boardSize * (cellSize + 8),
         minHeight: boardSize * (cellSize + 8),
         position: "relative",
+        boxShadow:
+          "0 4px 10px rgba(0,0,0,0.1), inset 0 0 8px rgba(255,255,255,0.1)",
       }}
     >
       <div

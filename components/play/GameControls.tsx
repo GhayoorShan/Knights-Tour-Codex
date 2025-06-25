@@ -29,15 +29,17 @@ export default function GameControls({
   return (
     <div className="flex flex-wrap justify-center gap-3 mb-1">
       <button
-        className="px-4 py-1 rounded-md bg-[var(--primary)] text-white font-semibold hover:brightness-110"
+        className="px-4 py-1 rounded-md bg-[var(--primary)] text-white font-semibold hover:brightness-110 transition-transform hover:scale-[1.04]"
+        style={{ boxShadow: "0 4px 10px rgba(0,0,0,0.1), inset 0 0 4px rgba(255,255,255,0.15)" }}
         onClick={() => router.push("/")}
       >
         Home
       </button>
       <button
-        className={`px-4 py-1 rounded-md bg-[var(--primary)] text-white font-semibold hover:brightness-110 ${
+        className={`px-4 py-1 rounded-md bg-[var(--primary)] text-white font-semibold hover:brightness-110 transition-transform hover:scale-[1.04] ${
           undoDisabled ? "opacity-40 cursor-not-allowed" : ""
         }`}
+        style={{ boxShadow: "0 4px 10px rgba(0,0,0,0.1), inset 0 0 4px rgba(255,255,255,0.15)" }}
         onClick={onUndo}
         disabled={undoDisabled || showingSolution || showVictory || showFailure}
         title="Undo"
@@ -45,9 +47,10 @@ export default function GameControls({
         Undo
       </button>
       <button
-        className={`px-4 py-1 rounded-md bg-[var(--primary)] text-white font-semibold hover:brightness-110 ${
+        className={`px-4 py-1 rounded-md bg-[var(--primary)] text-white font-semibold hover:brightness-110 transition-transform hover:scale-[1.04] ${
           redoDisabled ? "opacity-40 cursor-not-allowed" : ""
         }`}
+        style={{ boxShadow: "0 4px 10px rgba(0,0,0,0.1), inset 0 0 4px rgba(255,255,255,0.15)" }}
         onClick={onRedo}
         disabled={redoDisabled || showingSolution || showVictory || showFailure}
         title="Redo"
@@ -56,7 +59,8 @@ export default function GameControls({
       </button>
       {boardSize === 5 && (
         <button
-          className="px-4 py-1 rounded-md bg-[var(--primary)] text-white font-semibold hover:brightness-110"
+          className="px-4 py-1 rounded-md bg-[var(--primary)] text-white font-semibold hover:brightness-110 transition-transform hover:scale-[1.04]"
+          style={{ boxShadow: "0 4px 10px rgba(0,0,0,0.1), inset 0 0 4px rgba(255,255,255,0.15)" }}
           disabled={showingSolution}
           onClick={onShowSolution}
         >
@@ -64,7 +68,8 @@ export default function GameControls({
         </button>
       )}
       <button
-        className="px-4 py-1 rounded-md bg-[var(--secondary)] text-[var(--background)] font-semibold hover:brightness-110"
+        className="px-4 py-1 rounded-md bg-[var(--secondary)] text-[var(--background)] font-semibold hover:brightness-110 transition-transform hover:scale-[1.04]"
+        style={{ boxShadow: "0 4px 10px rgba(0,0,0,0.1), inset 0 0 4px rgba(255,255,255,0.15)" }}
         onClick={onReset}
       >
         Reset

@@ -23,7 +23,8 @@ export default function UserNamePrompt({
     <div className="fixed inset-0 z-50 bg-black/60 text-black flex items-center justify-center">
       <form
         onSubmit={handleSubmit}
-        className="bg-white p-6 rounded-lg shadow-xl flex flex-col gap-4"
+        className="bg-white p-6 rounded-lg flex flex-col gap-4"
+        style={{ boxShadow: "0 4px 10px rgba(0,0,0,0.1), inset 0 0 8px rgba(255,255,255,0.1)" }}
       >
         <label className="text-xl font-semibold">Enter your Username</label>
         <input
@@ -34,7 +35,8 @@ export default function UserNamePrompt({
           autoFocus
         />
         <button
-          className="bg-[var(--primary)] text-white py-2 rounded font-semibold hover:brightness-110"
+          className="bg-[var(--primary)] text-white py-2 rounded font-semibold hover:brightness-110 transition-transform hover:scale-[1.04]"
+          style={{ boxShadow: "0 4px 10px rgba(0,0,0,0.1), inset 0 0 4px rgba(255,255,255,0.15)" }}
           disabled={loading}
         >
           {loading ? "Registering..." : "Start Playing"}
