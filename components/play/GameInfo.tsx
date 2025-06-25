@@ -19,17 +19,17 @@ export default function GameInfo({
   user,
 }: GameInfoProps) {
   return (
-    <div className="mt-3 text-lg text-black font-semibold min-h-[32px] flex flex-col gap-1 items-center">
+    <div className="mt-3 text-lg text-[var(--foreground)] font-semibold min-h-[32px] flex flex-col gap-1 items-center">
       {user && (
         <span className="text-xs text-gray-500">Username: {user.username}</span>
       )}
       <span>Attempts: {attempts}</span>
       {showVictory ? (
-        <span className="text-green-600 animate-pulse">
+        <span className="text-[var(--success)] animate-pulse">
           🎉 You completed the Knight's Tour!
         </span>
       ) : showFailure ? (
-        <span className="text-[var(--primary)] animate-failshake">
+        <span className="text-[var(--error)] animate-failshake">
           No more moves! Try again.
         </span>
       ) : !gameStarted ? (
