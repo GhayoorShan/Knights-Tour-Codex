@@ -124,9 +124,9 @@ export default function PlayPage() {
       <style>
         {`
         @keyframes victorypop {
-          0% { transform: scale(0.8) rotate(-8deg); background: #fbbf24; }
-          50% { transform: scale(1.12) rotate(6deg); background: #86efac; }
-          100% { transform: scale(1) rotate(0);}
+          0% { transform: scale(0.8) rotate(-8deg); background: var(--success); }
+          50% { transform: scale(1.12) rotate(6deg); background: var(--primary); }
+          100% { transform: scale(1) rotate(0); }
         }
         .animate-[victorypop_0.4s] { animation: victorypop 0.38s; }
         @keyframes failshake {
@@ -136,6 +136,16 @@ export default function PlayPage() {
           40%, 60% { transform: translateX(4px); }
         }
         .animate-[failshake_0.4s], .animate-failshake { animation: failshake 0.38s; }
+        @keyframes highlight {
+          from { box-shadow: 0 0 0 0 var(--primary); }
+          to { box-shadow: 0 0 0 8px transparent; }
+        }
+        .animate-highlight { animation: highlight 0.3s ease-out; }
+        @keyframes fadeOverlay {
+          from { opacity: 0; }
+          to { opacity: 1; }
+        }
+        .animate-fade { animation: fadeOverlay 0.4s ease-out; }
         @keyframes winpop {
           0%   { transform: scale(0.5) rotate(-14deg);}
           45%  { transform: scale(1.2) rotate(13deg);}

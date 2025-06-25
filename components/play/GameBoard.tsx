@@ -38,7 +38,7 @@ export default function GameBoard({
 }: GameBoardProps) {
   return (
     <div
-      className="relative shadow-2xl rounded-3xl border-[2.5px] border-[var(--primary)]/30 bg-[var(--surface)] flex justify-center items-center"
+      className="relative shadow-lg rounded-3xl border-[2.5px] border-[var(--primary)]/30 bg-[var(--surface)] flex justify-center items-center"
       style={{
         padding: 22,
         margin: 8,
@@ -82,6 +82,8 @@ export default function GameBoard({
             return (
               <Square
                 key={`${row}-${col}`}
+                row={row}
+                col={col}
                 isKnight={isKnight}
                 moveNum={moveNum}
                 isVisited={isVisited}
@@ -100,16 +102,20 @@ export default function GameBoard({
         )}
         {confetti && <ConfettiBurst particles={confettiParticles} />}
         {showVictory && (
-          <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-40">
-            <span className="text-6xl animate-winpop">🎉</span>
-          </div>
+          <>
+            <div className="absolute inset-0 bg-[var(--success)]/85 rounded-2xl pointer-events-none z-30 animate-fade" />
+            <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-40">
+              <span className="text-6xl animate-winpop">🎉</span>
+            </div>
+          </>
         )}
         {showFailure && (
-          <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-40">
-            <span className="text-5xl animate-failshake text-[var(--primary)]">
-              😔
-            </span>
-          </div>
+          <>
+            <div className="absolute inset-0 bg-[var(--error)]/85 rounded-2xl pointer-events-none z-30 animate-fade" />
+            <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-40">
+              <span className="text-5xl animate-failshake text-[var(--primary)]">😔</span>
+            </div>
+          </>
         )}
       </div>
     </div>
