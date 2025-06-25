@@ -75,14 +75,22 @@ export default function PlayPage() {
         </div>
         <Link
           href="/leaderboard"
-          className="absolute right-6 top-1/2 -translate-y-1/2 bg-[var(--secondary)] text-[var(--background)] font-semibold px-5 py-2 rounded-xl shadow hover:brightness-110 transition text-base sm:text-lg"
-          style={{ minWidth: 140, textAlign: "center" }}
+          className="absolute right-6 top-1/2 -translate-y-1/2 bg-[var(--secondary)] text-[var(--background)] font-semibold px-5 py-2 rounded-xl shadow hover:brightness-110 transition text-base sm:text-lg hover:scale-[1.04]"
+          style={{
+            minWidth: 140,
+            textAlign: "center",
+            boxShadow:
+              "0 4px 10px rgba(0,0,0,0.1), inset 0 0 4px rgba(255,255,255,0.15)",
+          }}
         >
           🏆 Leaderboard
         </Link>
       </div>
 
-      <div className="flex flex-col items-center bg-white/95 rounded-3xl shadow-2xl p-6 sm:p-12 mt-2 max-w-fit border-[var(--primary)]/20 border-[2.5px]">
+      <div
+        className="flex flex-col items-center bg-white/95 rounded-3xl p-6 sm:p-12 mt-2 max-w-fit border-[var(--primary)]/20 border-[2.5px]"
+        style={{ boxShadow: "0 4px 10px rgba(0,0,0,0.1), inset 0 0 8px rgba(255,255,255,0.1)" }}
+      >
         <GameControls
           boardSize={boardSize}
           undoDisabled={undoDisabled}
@@ -150,6 +158,17 @@ export default function PlayPage() {
           100% { transform: translateY(0) scale(1);}
         }
         .animate-hopknight { animation: hopknight 0.16s;}
+        @keyframes moveglow {
+          0% {
+            box-shadow: 0 0 0 0 var(--primary);
+            opacity: 1;
+          }
+          100% {
+            box-shadow: 0 0 16px 6px rgba(139, 92, 246, 0);
+            opacity: 0;
+          }
+        }
+        .animate-move-glow { animation: moveglow 0.3s ease-out forwards; }
         `}
       </style>
     </main>
