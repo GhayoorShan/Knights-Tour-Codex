@@ -32,7 +32,10 @@ export function AnimatedKnight({
           (moving ? "animate-jump" : "")
         }
       >
-        <span className="text-white text-6xl drop-shadow-2xl leading-none">
+        <span
+          className="text-6xl drop-shadow-2xl leading-none"
+          style={{ color: (row + col) % 2 === 0 ? "#000000" : "#ffffff" }}
+        >
           ♞
         </span>
         <span className="text-[var(--secondary)] text-2xl font-extrabold -mt-2 drop-shadow-md leading-none">

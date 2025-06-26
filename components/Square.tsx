@@ -67,7 +67,7 @@ export default function Square({
         <span
           className="text-xl font-bold select-none"
           style={{
-            color: squareColor === "#242424" ? "#f6f6f6" : "#242424",
+            color: squareColor === "#000000" ? "#ffffff" : "#000000",
           }}
         >
           {moveNum}

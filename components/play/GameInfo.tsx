@@ -24,11 +24,11 @@ export default function GameInfo({
         <span className="text-xs text-gray-500">Username: {user.username}</span>
       )}
       <span>Attempts: {attempts}</span>
-      {showVictory ? (
-        <span className="text-green-600 animate-pulse">
-          🎉 You completed the Knight's Tour!
-        </span>
-      ) : showFailure ? (
+        {showVictory ? (
+          <span className="animate-winpop text-[var(--foreground)]">
+            🎉 You completed the Knight's Tour!
+          </span>
+        ) : showFailure ? (
         <span className="text-[var(--primary)] animate-failshake">
           No more moves! Try again.
         </span>
