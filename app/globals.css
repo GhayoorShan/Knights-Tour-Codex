@@ -31,3 +31,41 @@ body {
   color: var(--foreground);
   font-family: var(--font-sans), Arial, Helvetica, sans-serif;
 }
+
+@keyframes knightJump {
+  0% { transform: scale(1) translateY(0);}
+  25% { transform: scale(1.20) translateY(-22px) rotate(-12deg);}
+  55% { transform: scale(0.94) translateY(2px);}
+  80% { transform: scale(1.08) translateY(-6px);}
+  100% { transform: scale(1) translateY(0);}
+}
+.animate-jump {
+  animation: knightJump 0.7s cubic-bezier(.62,-0.15,.55,1.4);
+}
+
+
+@keyframes cellPulse {
+  0% { opacity: 0.9; transform: scale(0.7);}
+  65% { opacity: 0.7; transform: scale(1.20);}
+  100% { opacity: 0; transform: scale(1);}
+}
+.animate-impact {
+  animation: cellPulse 0.42s cubic-bezier(.21,1.19,.86,.93);
+}
+
+@keyframes pulseRingOnce {
+  0% { box-shadow: 0 0 0 0 var(--secondary); }
+  70% { box-shadow: 0 0 0 14px rgba(251,191,36,0); }
+  100% { box-shadow: 0 0 0 0 rgba(251,191,36,0);}
+}
+.animate-pulse-ring-once {
+  animation: pulseRingOnce 1.5s cubic-bezier(.66,0,.34,1) 1;
+}
+
+@keyframes cellCurrent {
+  0% { box-shadow: 0 0 0 0 var(--primary);}
+  100% { box-shadow: 0 0 24px 8px var(--primary);}
+}
+.animate-current {
+  animation: cellCurrent 0.85s cubic-bezier(.66,0,.34,1) alternate infinite;
+}

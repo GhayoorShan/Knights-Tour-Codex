@@ -1,8 +1,11 @@
+"use client";
+
+import { useEffect, useRef, useState } from "react";
 import Square from "@/components/Square";
+import { AnimatedKnight } from "@/components/AnimatedKnight";
 import ConfettiBurst, {
   type ConfettiParticle,
 } from "@/components/ConfettiBurst";
-
 export type Position = { row: number; col: number };
 
 interface GameBoardProps {
@@ -36,84 +39,121 @@ export default function GameBoard({
   confettiParticles,
   onSquareClick,
 }: GameBoardProps) {
+  const [prevPos, setPrevPos] = useState<Position | null>(null);
+  const [isMoving, setIsMoving] = useState(false);
+
+  useEffect(() => {
+    if (
+      knightPos &&
+      prevPos &&
+      (knightPos.row !== prevPos.row || knightPos.col !== prevPos.col)
+    ) {
+      setIsMoving(true);
+      const t = setTimeout(() => setIsMoving(false), 700);
+      return () => clearTimeout(t);
+    }
+    setPrevPos(knightPos);
+    // eslint-disable-next-line
+  }, [knightPos]);
+
+  const boardPx = boardSize * cellSize;
+
+  // Chessboard color palette (modern look)
+  const chessLight = "#f6f6f6"; // almost white
+  const chessDark = "#242424"; // almost black
+
   return (
     <div
-      className="relative rounded-3xl border-[2.5px] border-[var(--primary)]/30 bg-[var(--surface)] flex justify-center items-center"
+      className="relative rounded-3xl border-[2.5px] border-[var(--primary)]/30 flex justify-center items-center mx-8"
       style={{
-        padding: 22,
-        margin: 8,
-        minWidth: boardSize * (cellSize + 8),
-        minHeight: boardSize * (cellSize + 8),
-        position: "relative",
+        padding: 30,
+        margin: 20,
+        width: boardPx,
+        height: boardPx,
+        minWidth: boardPx,
+        minHeight: boardPx,
         boxShadow:
           "0 4px 10px rgba(0,0,0,0.1), inset 0 0 8px rgba(255,255,255,0.1)",
       }}
     >
+      {/* Grid */}
       <div
-        className="grid"
+        className="grid relative"
         style={{
           gridTemplateColumns: `repeat(${boardSize}, ${cellSize}px)`,
           gridTemplateRows: `repeat(${boardSize}, ${cellSize}px)`,
-          gap: "8px",
+          gap: "0px", // No gap!
           zIndex: 1,
         }}
       >
         {Array.from({ length: boardSize }).map((_, row) =>
           Array.from({ length: boardSize }).map((_, col) => {
-            let isKnight, moveNum, isVisited;
+            let moveNum,
+              isVisited,
+              isKnight = false;
             if (showingSolution && solution) {
               const num = solution[row][col];
               moveNum = num <= solutionStep ? num : 0;
               isVisited = moveNum > 0;
-              isKnight = moveNum === solutionStep;
             } else {
-              isKnight = knightPos?.row === row && knightPos?.col === col;
               moveNum = visited[row][col];
               isVisited = moveNum > 0;
+              isKnight = knightPos?.row === row && knightPos?.col === col;
             }
             const isValidMove =
               !showingSolution &&
               !showVictory &&
               !showFailure &&
               validMoves.some((pos) => pos.row === row && pos.col === col);
-            let cellEffect = "";
-            if (showVictory && isVisited)
-              cellEffect = "animate-[victorypop_0.4s]";
-            if (showFailure && !isVisited)
-              cellEffect = "animate-[failshake_0.4s]";
+
+            // Chessboard coloring: alternate by (row+col)%2
+            const chessSquare = (row + col) % 2 === 0 ? chessLight : chessDark;
+
             return (
               <Square
                 key={`${row}-${col}`}
-                isKnight={isKnight}
+                isKnight={knightPos?.row === row && knightPos?.col === col}
                 moveNum={moveNum}
                 isVisited={isVisited}
                 isValidMove={isValidMove}
-                cellEffect={cellEffect}
                 onClick={() => onSquareClick(row, col)}
                 disabled={
-                  (isVisited && !isKnight) ||
+                  (isVisited && !knightPos) ||
                   showVictory ||
                   showFailure ||
                   showingSolution
                 }
+                isCurrent={knightPos?.row === row && knightPos?.col === col}
+                cellEffect={""}
+                squareColor={chessSquare}
               />
             );
           })
         )}
         {confetti && <ConfettiBurst particles={confettiParticles} />}
-        {showVictory && (
-          <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-40">
-            <span className="text-6xl animate-winpop">🎉</span>
-          </div>
-        )}
-        {showFailure && (
-          <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-40">
-            <span className="text-5xl animate-failshake text-[var(--primary)]">
-              😔
-            </span>
-          </div>
-        )}
       </div>
+      {/* Animated Knight on top */}
+      {knightPos && (
+        <AnimatedKnight
+          row={knightPos.row}
+          col={knightPos.col}
+          cellSize={cellSize}
+          moving={isMoving}
+          moveNum={visited[knightPos.row][knightPos.col]}
+        />
+      )}
+      {showVictory && (
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-40">
+          <span className="text-6xl animate-winpop">🎉</span>
+        </div>
+      )}
+      {showFailure && (
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-40">
+          <span className="text-5xl animate-failshake text-[var(--primary)]">
+            😔
+          </span>
+        </div>
+      )}
     </div>
   );
 }

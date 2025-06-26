@@ -9,6 +9,7 @@ import UserNamePrompt from "@/components/play/UserNamePrompt";
 import { useKnightsTour, SOLUTIONS } from "@/hooks/useKnightsTour";
 import { useUser } from "@/hooks/useUser";
 import Link from "next/link";
+import KnightExplorer from "@/components/KnightExplorer"; // This is your KnightExplorer
 
 export default function PlayPage() {
   const params = useParams<{ size: string }>();
@@ -63,7 +64,6 @@ export default function PlayPage() {
   return (
     <main className="min-h-screen bg-gradient-to-br from-[var(--surface)] to-[var(--background)] flex flex-col items-center py-0">
       {/* Header / Banner */}
-
       <div className="relative w-full flex flex-col items-center bg-[var(--primary)] text-white py-6 shadow-md mb-8 rounded-b-3xl">
         <div className="text-center flex flex-col items-center gap-1">
           <span className="font-bold text-2xl sm:text-4xl tracking-tight text-[var(--secondary)] drop-shadow-xl">
@@ -87,90 +87,58 @@ export default function PlayPage() {
         </Link>
       </div>
 
-      <div
-        className="flex flex-col items-center bg-white/95 rounded-3xl p-6 sm:p-12 mt-2 max-w-fit border-[var(--primary)]/20 border-[2.5px]"
-        style={{ boxShadow: "0 4px 10px rgba(0,0,0,0.1), inset 0 0 8px rgba(255,255,255,0.1)" }}
-      >
-        <GameControls
-          boardSize={boardSize}
-          undoDisabled={undoDisabled}
-          redoDisabled={redoDisabled}
-          showingSolution={showingSolution}
-          showVictory={showVictory}
-          showFailure={showFailure}
-          onUndo={handleUndo}
-          onRedo={handleRedo}
-          onShowSolution={handleShowSolution}
-          onReset={handleReset}
-        />
-        <GameBoard
-          boardSize={boardSize}
-          cellSize={CELL_SIZE}
-          visited={visited}
-          knightPos={knightPos}
-          showingSolution={showingSolution}
-          solution={boardSize === 5 ? SOLUTIONS[5] : undefined}
-          solutionStep={solutionStep}
-          validMoves={validMoves}
-          showVictory={showVictory}
-          showFailure={showFailure}
-          confetti={confetti}
-          confettiParticles={confettiParticles}
-          onSquareClick={handleSquareClick}
-        />
-        <GameInfo
-          showVictory={showVictory}
-          showFailure={showFailure}
-          gameStarted={gameStarted}
-          moveCount={moveCount}
-          boardSize={boardSize}
-          attempts={attempts}
-          user={user}
-          winTimeSeconds={winTimeSeconds}
-        />
+      <div className="flex flex-row items-start gap-10">
+        {/* Left: Game board and controls */}
+        <div
+          className="flex flex-col items-center bg-white/95 rounded-3xl p-6 sm:p-12 mt-2 max-w-fit border-[var(--primary)]/20 border-[2.5px]"
+          style={{
+            boxShadow:
+              "0 4px 10px rgba(0,0,0,0.1), inset 0 0 8px rgba(255,255,255,0.1)",
+          }}
+        >
+          <GameControls
+            boardSize={boardSize}
+            undoDisabled={undoDisabled}
+            redoDisabled={redoDisabled}
+            showingSolution={showingSolution}
+            showVictory={showVictory}
+            showFailure={showFailure}
+            onUndo={handleUndo}
+            onRedo={handleRedo}
+            onShowSolution={handleShowSolution}
+            onReset={handleReset}
+          />
+          <GameBoard
+            boardSize={boardSize}
+            cellSize={CELL_SIZE}
+            visited={visited}
+            knightPos={knightPos}
+            showingSolution={showingSolution}
+            solution={boardSize === 5 ? SOLUTIONS[5] : undefined}
+            solutionStep={solutionStep}
+            validMoves={validMoves}
+            showVictory={showVictory}
+            showFailure={showFailure}
+            confetti={confetti}
+            confettiParticles={confettiParticles}
+            onSquareClick={handleSquareClick}
+          />
+          <GameInfo
+            showVictory={showVictory}
+            showFailure={showFailure}
+            gameStarted={gameStarted}
+            moveCount={moveCount}
+            boardSize={boardSize}
+            attempts={attempts}
+            user={user}
+            winTimeSeconds={winTimeSeconds}
+          />
+        </div>
+        {/* Right: Tutorial */}
+        <div className="flex flex-col gap-5 mt-4">
+          <KnightExplorer />
+        </div>
       </div>
-      <style>
-        {`
-        @keyframes victorypop {
-          0% { transform: scale(0.8) rotate(-8deg); background: #fbbf24; }
-          50% { transform: scale(1.12) rotate(6deg); background: #86efac; }
-          100% { transform: scale(1) rotate(0);}
-        }
-        .animate-[victorypop_0.4s] { animation: victorypop 0.38s; }
-        @keyframes failshake {
-          10%, 90% { transform: translateX(-1px); }
-          20%, 80% { transform: translateX(2px); }
-          30%, 50%, 70% { transform: translateX(-4px); }
-          40%, 60% { transform: translateX(4px); }
-        }
-        .animate-[failshake_0.4s], .animate-failshake { animation: failshake 0.38s; }
-        @keyframes winpop {
-          0%   { transform: scale(0.5) rotate(-14deg);}
-          45%  { transform: scale(1.2) rotate(13deg);}
-          90%  { transform: scale(0.92);}
-          100% { transform: scale(1);}
-        }
-        .animate-winpop { animation: winpop 1.18s;}
-        @keyframes hopknight {
-          0% { transform: translateY(0) scale(1); filter: drop-shadow(0 1px 16px #c084fcaa);}
-          32% { transform: translateY(-18px) scale(1.12); filter: drop-shadow(0 8px 22px #7c3aed);}
-          80% { transform: translateY(1px) scale(1.04);}
-          100% { transform: translateY(0) scale(1);}
-        }
-        .animate-hopknight { animation: hopknight 0.16s;}
-        @keyframes moveglow {
-          0% {
-            box-shadow: 0 0 0 0 var(--primary);
-            opacity: 1;
-          }
-          100% {
-            box-shadow: 0 0 16px 6px rgba(139, 92, 246, 0);
-            opacity: 0;
-          }
-        }
-        .animate-move-glow { animation: moveglow 0.3s ease-out forwards; }
-        `}
-      </style>
     </main>
   );
 }

@@ -1,5 +1,4 @@
 "use client";
-
 import { useEffect, useState } from "react";
 
 interface SquareProps {
@@ -10,6 +9,8 @@ interface SquareProps {
   cellEffect: string;
   onClick: () => void;
   disabled: boolean;
+  isCurrent: boolean;
+  squareColor: string; // Add for direct color
 }
 
 export default function Square({
@@ -20,57 +21,59 @@ export default function Square({
   cellEffect,
   onClick,
   disabled,
+  isCurrent,
+  squareColor,
 }: SquareProps) {
-  const [highlight, setHighlight] = useState(false);
+  // Handle one-time pulse for destinations
+  const [pulseOnce, setPulseOnce] = useState(false);
 
   useEffect(() => {
     if (isValidMove) {
-      setHighlight(true);
-      const t = setTimeout(() => setHighlight(false), 300);
+      setPulseOnce(true);
+      const t = setTimeout(() => setPulseOnce(false), 700);
       return () => clearTimeout(t);
+    } else {
+      setPulseOnce(false);
     }
   }, [isValidMove]);
-
-  const squareColor = isKnight
-    ? "bg-[var(--primary)]"
-    : isVisited
-    ? "bg-[var(--secondary)]/90"
-    : "bg-[var(--surface)]";
 
   return (
     <button
       className={`
-        relative w-[85px] h-[85px] rounded-xl border border-[var(--primary)]/30 overflow-hidden
-        flex flex-col items-center justify-center transition-transform
+        relative
+        w-[90px] h-[90px]
+        border-0
+        rounded-none
+        overflow-hidden
+        flex flex-col items-center justify-center
+        transition-transform
         hover:scale-[1.04]
-        ${highlight ? "animate-move-glow" : ""}
-        ${squareColor}
+        ${pulseOnce && !isKnight ? "animate-pulse-ring-once" : ""}
         ${cellEffect}
       `}
       style={{
+        background: squareColor,
+        boxShadow: isCurrent
+          ? "0 0 0 5px var(--primary), 0 0 16px 8px #fbbf2440"
+          : undefined,
         transition: "background 0.18s, box-shadow 0.16s, transform 0.18s",
-        boxShadow: isKnight
-          ? "0 8px 36px #8b5cf647"
-          : "0 4px 10px rgba(0,0,0,0.1), inset 0 0 6px rgba(255,255,255,0.15)",
       }}
       tabIndex={0}
       onClick={onClick}
       disabled={disabled}
     >
-      {isKnight ? (
-        <span className="flex flex-col items-center justify-center z-30 animate-hopknight pointer-events-none select-none">
-
-          <span className="text-white text-4xl drop-shadow-2xl leading-none">♞</span>
-          <span className="text-[var(--secondary)] text-lg font-extrabold -mt-1 drop-shadow-md leading-none">
-
-            {moveNum}
-          </span>
+      {/* Only show moveNum if not knight */}
+      {!isKnight && isVisited && (
+        <span
+          className="text-xl font-bold select-none"
+          style={{
+            color: squareColor === "#242424" ? "#f6f6f6" : "#242424",
+          }}
+        >
+          {moveNum}
         </span>
-      ) : isVisited ? (
-
-        <span className="text-[var(--background)] text-lg font-bold select-none">{moveNum}</span>
-
-      ) : null}
+      )}
+      {/* If isKnight, the knight+number will be absolutely overlayed */}
     </button>
   );
 }
