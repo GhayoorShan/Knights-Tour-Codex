@@ -56,6 +56,9 @@ export default function TutorialKnightMoves() {
   const [jumping, setJumping] = useState(false);
   const [animating, setAnimating] = useState(true);
 
+  const knightColor =
+    (pos[0] + pos[1]) % 2 === 0 ? "var(--foreground)" : "var(--background)";
+
   const cycleRef = useRef(0);
   const timers = useRef<NodeJS.Timeout[]>([]);
 
@@ -157,7 +160,9 @@ export default function TutorialKnightMoves() {
     >
       <div
         className="text-base font-semibold mb-2"
-        style={{ color: "var(--primary)" }}
+
+        style={{ color: "var(--foreground)" }}
+
       >
         How does the Knight move?
       </div>
@@ -316,8 +321,8 @@ export default function TutorialKnightMoves() {
               (jumping ? "animate-jump" : "")
             }
             style={{
-              color: "#8b5cf6",
-              filter: `drop-shadow(0 2px 12px #fbbf2499)`,
+              color: knightColor,
+              filter: "drop-shadow(0 2px 12px rgba(0,0,0,0.4))",
             }}
           >
             <KnightIcon className="w-14 h-14" />
@@ -331,7 +336,9 @@ export default function TutorialKnightMoves() {
         className={`px-4 py-2 rounded-lg font-semibold mt-2 shadow transition ${
           animating && !finished
             ? "bg-gray-400 text-white opacity-60 cursor-not-allowed"
-            : "bg-[var(--secondary)] text-[var(--background)] hover:brightness-110"
+
+            : "bg-[var(--secondary)] text-[var(--foreground)] hover:brightness-110"
+
         }`}
         style={{
           minWidth: 100,
