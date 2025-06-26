@@ -1,15 +1,16 @@
 @import "tailwindcss";
 
 :root {
-  --background: #E8F2FF;
-  --foreground: #2B2B2B;
-  --primary: #C8F0E6;
-  --secondary: #E9E5FF;
-  --surface: #F4F5F7;
-  --board-light: #F4F5F7;
-  --board-dark: #E8F2FF;
-  --success: #FFE3C4;
-  --error: #FFD8DC;
+  /* Monochrome palette for a classic board game look */
+  --background: #ffffff;
+  --foreground: #000000;
+  --primary: #000000;
+  --secondary: #f0f0f0;
+  --surface: #f5f5f5;
+  --board-light: #ffffff;
+  --board-dark: #000000;
+  --success: #bbbbbb;
+  --error: #888888;
 }
 
 @theme inline {

@@ -17,15 +17,13 @@ export const SOLUTIONS: Record<number, number[][]> = {
   ],
 };
 
+// Greyscale confetti for the monochrome theme
 const CONFETTI_COLORS = [
-  "#8b5cf6",
-  "#fbbf24",
   "#ffffff",
-  "#4f46e5",
-  "#f472b6",
-  "#22d3ee",
-  "#4ade80",
-  "#64748b",
+  "#d9d9d9",
+  "#bfbfbf",
+  "#808080",
+  "#000000",
 ];
 
 function getKnightMoves(pos: Position, boardSize: number): Position[] {
