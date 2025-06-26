@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
 import type { ConfettiParticle } from "@/components/ConfettiBurst";
 import type { Position } from "@/components/play/GameBoard";
@@ -64,7 +64,6 @@ export function useKnightsTour(boardSize: number, user: User | null) {
   const [gameEnded, setGameEnded] = useState(false);
 
   const [knightAnim, setKnightAnim] = useState<{ row: number; col: number } | null>(null);
-  const animTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const [confetti, setConfetti] = useState(false);
   const [confettiParticles, setConfettiParticles] = useState<ConfettiParticle[]>([]);
@@ -211,22 +210,7 @@ export function useKnightsTour(boardSize: number, user: User | null) {
   function handleShowSolution() {
     setShowingSolution(true);
     setSolutionStep(1);
-    if (boardSize === 5) {
-      // Position knight on the first move of the predefined solution
-      let start: Position | null = null;
-      for (let i = 0; i < boardSize; i++) {
-        for (let j = 0; j < boardSize; j++) {
-          if (SOLUTIONS[5][i][j] === 1) {
-            start = { row: i, col: j };
-            break;
-          }
-        }
-        if (start) break;
-      }
-      setKnightPos(start);
-    } else {
-      setKnightPos(null);
-    }
+    setKnightPos(null);
     setVisited(Array.from({ length: boardSize }, () => Array(boardSize).fill(0)));
     setGameStarted(false);
     setMoveCount(0);
@@ -238,30 +222,6 @@ export function useKnightsTour(boardSize: number, user: User | null) {
     setConfetti(false);
     setStartTime(null);
   }
-
-  // --- Animate solution knight ---
-  useEffect(() => {
-    if (
-      showingSolution &&
-      boardSize === 5 &&
-      solutionStep > 1 &&
-      solutionStep <= 25
-    ) {
-      let nextKnight: Position | null = null;
-      for (let i = 0; i < boardSize; i++) {
-        for (let j = 0; j < boardSize; j++) {
-          if (SOLUTIONS[5][i][j] === solutionStep) {
-            nextKnight = { row: i, col: j };
-          }
-        }
-      }
-      setKnightAnim(knightPos);
-      if (animTimeout.current) clearTimeout(animTimeout.current);
-      animTimeout.current = setTimeout(() => {
-        setKnightPos(nextKnight);
-      }, 100);
-    }
-  }, [showingSolution, solutionStep, boardSize]);
 
   // --- Confetti and win/fail animations ---
   const hasWon = visited.flat().every((num) => num > 0);
