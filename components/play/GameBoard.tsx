@@ -58,9 +58,9 @@ export default function GameBoard({
 
   const boardPx = boardSize * cellSize;
 
-  // Chessboard color palette: classic black and white
-  const chessLight = "#ffffff"; // white
-  const chessDark = "#000000"; // black
+  // Chessboard colors aligned with app theme
+  const chessLight = "var(--background)";
+  const chessDark = "var(--foreground)";
 
   return (
     <div
@@ -98,7 +98,7 @@ export default function GameBoard({
             } else {
               moveNum = visited[row][col];
               isVisited = moveNum > 0;
-              isKnight = knightPos?.row === row && knightPos?.col === col;
+              isKnight = false;
             }
             const isValidMove =
               !showingSolution &&
@@ -112,7 +112,7 @@ export default function GameBoard({
             return (
               <Square
                 key={`${row}-${col}`}
-                isKnight={knightPos?.row === row && knightPos?.col === col}
+                isKnight={!showingSolution && knightPos?.row === row && knightPos?.col === col}
                 moveNum={moveNum}
                 isVisited={isVisited}
                 isValidMove={isValidMove}
@@ -123,7 +123,7 @@ export default function GameBoard({
                   showFailure ||
                   showingSolution
                 }
-                isCurrent={knightPos?.row === row && knightPos?.col === col}
+                isCurrent={!showingSolution && knightPos?.row === row && knightPos?.col === col}
                 cellEffect={""}
                 squareColor={chessSquare}
               />
@@ -133,7 +133,7 @@ export default function GameBoard({
         {confetti && <ConfettiBurst particles={confettiParticles} />}
       </div>
       {/* Animated Knight on top */}
-      {knightPos && (
+      {!showingSolution && knightPos && (
         <AnimatedKnight
           row={knightPos.row}
           col={knightPos.col}
