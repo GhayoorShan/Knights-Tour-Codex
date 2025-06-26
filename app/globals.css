@@ -58,6 +58,15 @@ button {
 }
 
 
+@keyframes pulseRing {
+  0% { box-shadow: 0 0 0 0 var(--secondary); }
+  70% { box-shadow: 0 0 0 14px rgba(251,191,36,0); }
+  100% { box-shadow: 0 0 0 0 rgba(251,191,36,0);}
+}
+.animate-pulse-ring {
+  animation: pulseRing 1.5s cubic-bezier(.66,0,.34,1) infinite;
+}
+
 @keyframes cellCurrent {
   0% { box-shadow: 0 0 0 0 var(--primary);}
   100% { box-shadow: 0 0 24px 8px var(--primary);}

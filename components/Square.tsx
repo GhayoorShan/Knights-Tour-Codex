@@ -35,7 +35,9 @@ export default function Square({
         flex flex-col items-center justify-center
         transition-transform
         hover:scale-[1.04]
-        ${cellEffect}
+
+        ${isValidMove && !isKnight ? "animate-pulse-ring" : ""}
+
       `}
       style={{
         background: squareColor,

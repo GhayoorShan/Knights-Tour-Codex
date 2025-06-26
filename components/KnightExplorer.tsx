@@ -160,7 +160,9 @@ export default function TutorialKnightMoves() {
     >
       <div
         className="text-base font-semibold mb-2"
+
         style={{ color: "var(--foreground)" }}
+
       >
         How does the Knight move?
       </div>
@@ -334,7 +336,9 @@ export default function TutorialKnightMoves() {
         className={`px-4 py-2 rounded-lg font-semibold mt-2 shadow transition ${
           animating && !finished
             ? "bg-gray-400 text-white opacity-60 cursor-not-allowed"
+
             : "bg-[var(--secondary)] text-[var(--foreground)] hover:brightness-110"
+
         }`}
         style={{
           minWidth: 100,
