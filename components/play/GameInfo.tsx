@@ -25,7 +25,7 @@ export default function GameInfo({
       )}
       <span>Attempts: {attempts}</span>
       {showVictory ? (
-        <span className="text-green-600 animate-pulse">
+        <span className="animate-pulse text-[var(--foreground)]">
           🎉 You completed the Knight's Tour!
         </span>
       ) : showFailure ? (

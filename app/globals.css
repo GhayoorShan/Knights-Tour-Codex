@@ -2,11 +2,12 @@
 
 :root {
 
-  --background: #0f172a;
-  --foreground: #e2e8f0;
-  --primary: #8b5cf6;
-  --secondary: #fbbf24;
-  --surface: #1e293b;
+  /* Monochrome colour scheme */
+  --background: #ffffff; /* page background */
+  --foreground: #000000; /* text */
+  --primary: #000000;   /* accents and headers */
+  --secondary: #ffffff; /* secondary accents */
+  --surface: #f0f0f0;   /* cards and surfaces */
 
 }
 
@@ -19,10 +20,9 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #f8fafc;
-    --surface: #111827;
-
+    --background: #000000;
+    --foreground: #ffffff;
+    --surface: #1a1a1a;
   }
 }
 
