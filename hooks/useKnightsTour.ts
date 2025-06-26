@@ -17,13 +17,7 @@ export const SOLUTIONS: Record<number, number[][]> = {
   ],
 };
 
-const CONFETTI_COLORS = [
-  "#000000",
-  "#444444",
-  "#888888",
-  "#bbbbbb",
-  "#ffffff",
-];
+const CONFETTI_COLORS = ["#000000", "#444444", "#888888", "#bbbbbb", "#ffffff"];
 
 function getKnightMoves(pos: Position, boardSize: number): Position[] {
   const moves = [

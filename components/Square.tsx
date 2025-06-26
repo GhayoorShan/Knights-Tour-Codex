@@ -1,3 +1,4 @@
+// components/Square.tsx
 "use client";
 
 interface SquareProps {
@@ -5,11 +6,12 @@ interface SquareProps {
   moveNum: number;
   isVisited: boolean;
   isValidMove: boolean;
-  cellEffect: string;
   onClick: () => void;
   disabled: boolean;
   isCurrent: boolean;
-  squareColor: string; // Add for direct color
+  squareColor: string;
+  isDestination: boolean;
+  isChessMode: boolean;
 }
 
 export default function Square({
@@ -17,56 +19,70 @@ export default function Square({
   moveNum,
   isVisited,
   isValidMove,
-  cellEffect,
   onClick,
   disabled,
   isCurrent,
   squareColor,
+  isDestination,
+  isChessMode,
 }: SquareProps) {
+  let finalBackgroundColor = "transparent";
+  if (isDestination) {
+    finalBackgroundColor = "var(--destination-color)";
+  } else if (isChessMode) {
+    finalBackgroundColor = squareColor;
+  }
+
+  // Only top + left borders in Normal mode
+  const borderClass = isChessMode
+    ? ""
+    : "border-t border-l border-[var(--secondary)]";
+
+  // Font color: always black (#000) in Normal mode; else contrast
+  const numberColor = !isChessMode
+    ? "#000000"
+    : squareColor === "var(--foreground)"
+    ? "var(--background)"
+    : "var(--foreground)";
+
+  let boxShadow: string | undefined;
+  if (isCurrent) {
+    boxShadow =
+      "-5px -5px 10px var(--uplift-shadow-top-left), 5px 5px 10px var(--uplift-shadow-bottom-right)";
+  } else if (isValidMove && !isDestination) {
+    boxShadow =
+      "inset 0 0 0 2px var(--background), inset 0 0 0 4px var(--foreground)";
+  }
 
   return (
     <button
       className={`
         relative
-        w-[90px] h-[90px]
-        border-none
+        w-full h-full
         rounded-none
         overflow-hidden
         flex flex-col items-center justify-center
         transition-transform
         hover:scale-[1.04]
-
-        ${isValidMove && !isKnight ? "animate-pulse-ring" : ""}
-
+        ${borderClass}
       `}
       style={{
-        background: squareColor,
-        boxShadow: isCurrent
-          ? "0 0 0 5px var(--primary), 0 0 16px 8px #fbbf2440"
-          : isValidMove
-          ? "inset 0 0 0 3px var(--secondary)"
-          : undefined,
+        background: finalBackgroundColor,
+        boxShadow,
         transition: "background 0.18s, box-shadow 0.16s, transform 0.18s",
       }}
-      tabIndex={0}
       onClick={onClick}
       disabled={disabled}
+      tabIndex={0}
     >
-      {/* Only show moveNum if not knight */}
-      {!isKnight && isVisited && (
+      {!isKnight && isVisited && !isDestination && (
         <span
           className="text-xl font-bold select-none"
-          style={{
-            color:
-              squareColor === "var(--foreground)"
-                ? "var(--background)"
-                : "var(--foreground)",
-          }}
+          style={{ color: numberColor }}
         >
           {moveNum}
         </span>
       )}
-      {/* If isKnight, the knight+number will be absolutely overlayed */}
     </button>
   );
 }

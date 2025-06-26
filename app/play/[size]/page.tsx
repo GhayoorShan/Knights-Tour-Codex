@@ -64,33 +64,21 @@ export default function PlayPage() {
   return (
     <main className="min-h-screen bg-gradient-to-br from-[var(--surface)] to-[var(--background)] flex flex-col items-center py-0">
       {/* Header / Banner */}
-      <div className="relative w-full flex flex-col items-center bg-[var(--primary)] text-white py-6 shadow-md mb-8 rounded-b-3xl">
+      <div className="relative w-full flex flex-col items-center bg-[var(--primary)] text-[var(--background)] py-6 shadow-md mb-8 rounded-b-3xl">
         <div className="text-center flex flex-col items-center gap-1">
-          <span className="font-bold text-2xl sm:text-4xl tracking-tight text-[var(--secondary)] drop-shadow-xl">
+          <span className="font-bold text-2xl sm:text-4xl tracking-tight text-[var(--background)] drop-shadow-xl">
             ♞ Knight's Tour Challenge
           </span>
-          <span className="mt-1 text-base sm:text-lg opacity-85 font-medium">
+          <span className="mt-1 text-base sm:text-lg opacity-80 font-medium">
             Visit every square exactly once!
           </span>
         </div>
-        <Link
-          href="/leaderboard"
-          className="absolute right-6 top-1/2 -translate-y-1/2 bg-[var(--secondary)] text-[var(--background)] font-semibold px-5 py-2 rounded-xl shadow hover:brightness-110 transition text-base sm:text-lg hover:scale-[1.04]"
-          style={{
-            minWidth: 140,
-            textAlign: "center",
-            boxShadow:
-              "0 4px 10px rgba(0,0,0,0.1), inset 0 0 4px rgba(255,255,255,0.15)",
-          }}
-        >
-          🏆 Leaderboard
-        </Link>
       </div>
 
       <div className="flex flex-row items-start gap-10">
         {/* Left: Game board and controls */}
         <div
-          className="flex flex-col items-center bg-white/95 rounded-3xl p-6 sm:p-12 mt-2 max-w-fit border-[var(--primary)]/20 border-[2.5px]"
+          className="flex flex-col items-center bg-white/95 rounded-3xl p-6 sm:p-12 mt-2 max-w-fit border-[var(--foreground)]/20 border-[2.5px]"
           style={{
             boxShadow:
               "0 4px 10px rgba(0,0,0,0.1), inset 0 0 8px rgba(255,255,255,0.1)",
@@ -136,6 +124,18 @@ export default function PlayPage() {
         </div>
         {/* Right: Tutorial */}
         <div className="flex flex-col gap-5 mt-4">
+          <Link
+            href="/leaderboard"
+            className=" bg-[var(--surface)] text-[var(--foreground)] font-semibold px-5 py-2 rounded-xl shadow-md hover:brightness-110 transition text-base sm:text-lg hover:scale-[1.04]"
+            style={{
+              minWidth: 140,
+              textAlign: "center",
+              boxShadow:
+                "0 2px 8px rgba(0,0,0,0.15), inset 0 1px 2px rgba(255,255,255,0.2)",
+            }}
+          >
+            🏆 Leaderboard
+          </Link>
           <KnightExplorer />
         </div>
       </div>

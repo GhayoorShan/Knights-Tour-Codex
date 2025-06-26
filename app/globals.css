@@ -1,14 +1,27 @@
 @import "tailwindcss";
 
 :root {
+  /* Classic Chess Theme */
+  --background: #ffffff; /* page background - white */
+  --foreground: #000000; /* text and pieces - black */
+  --primary: #000000; /* primary actions, headers - black */
+  --secondary: #888888; /* secondary accents, borders - grey */
+  --surface: #f0f0f0; /* cards and surfaces - light grey */
 
-  /* Monochrome colour scheme */
-  --background: #ffffff; /* page background */
-  --foreground: #000000; /* text */
-  --primary: #000000;   /* accents and headers */
-  --secondary: #999999; /* secondary accents & highlights */
-  --surface: #f0f0f0;   /* cards and surfaces */
+  /* Specific colors for success and error messages */
+  --success-color: #10B981; /* Still green for victory, can be changed if needed */
+  --error-color: #EF4444;   /* Still red for failure, can be changed if needed */
 
+  /* Updated: Color for the destination square - a calm blue for light mode */
+  --destination-color: #3498db; /* A standard, clear blue */
+  --uplift-shadow-top-left: rgba(255, 255, 255, 0.7); /* Light source from top-left */
+  --uplift-shadow-bottom-right: rgba(0, 0, 0, 0.2);  /* Dark source from bottom-right */
+
+   /* NEW: Theme-aware shadow variables for common box shadows */
+   --shadow-dark: rgba(0, 0, 0, 0.1); /* Outer shadow (darker) for light mode */
+   --shadow-light: rgba(255, 255, 255, 0.15); /* Inset/inner shadow (lighter) for light mode */
+ 
+ 
 }
 
 @theme inline {
@@ -21,76 +34,25 @@
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #000000;
-    --foreground: #ffffff;
-    --surface: #1a1a1a;
+    --foreground: #f5f5f5;
+    --primary: #ffffff;
+    --surface: #1c1c1c;
+
+    /* Dark mode specific colors for success and error messages */
+    --success-color: #34D399;
+    --error-color: #F87171;
+
+    /* Updated: Dark mode color for the destination square - a lighter blue */
+    --destination-color: #64b5f6; /* A slightly lighter blue for dark backgrounds */
+     /* Uplift 3D shadows for dark mode */
+     --uplift-shadow-top-left: rgba(50, 50, 50, 0.7);    /* Darker "light" for dark background */
+     --uplift-shadow-bottom-right: rgba(255, 255, 255, 0.2); /* Lighter "dark" for dark background */
+     /* NEW: Theme-aware shadow variables for dark mode */
+    --shadow-dark: rgba(255, 255, 255, 0.1); /* Outer shadow (lighter) for dark mode */
+    --shadow-light: rgba(0, 0, 0, 0.15);    /* Inset/inner shadow (darker) for dark mode */
+
+  
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
-}
-
-button {
-  border: none;
-}
-
-@keyframes knightJump {
-  0% { transform: scale(1) translateY(0);}
-  25% { transform: scale(1.20) translateY(-22px) rotate(-12deg);}
-  55% { transform: scale(0.94) translateY(2px);}
-  80% { transform: scale(1.08) translateY(-6px);}
-  100% { transform: scale(1) translateY(0);}
-}
-.animate-jump {
-  animation: knightJump 0.7s cubic-bezier(.62,-0.15,.55,1.4);
-}
-
-
-@keyframes cellPulse {
-  0% { opacity: 0.9; transform: scale(0.7);}
-  65% { opacity: 0.7; transform: scale(1.20);}
-  100% { opacity: 0; transform: scale(1);}
-}
-.animate-impact {
-  animation: cellPulse 0.42s cubic-bezier(.21,1.19,.86,.93);
-}
-
-
-@keyframes pulseRing {
-  0% { box-shadow: 0 0 0 0 var(--secondary); }
-  70% { box-shadow: 0 0 0 14px rgba(251,191,36,0); }
-  100% { box-shadow: 0 0 0 0 rgba(251,191,36,0);}
-}
-.animate-pulse-ring {
-  animation: pulseRing 1.5s cubic-bezier(.66,0,.34,1) infinite;
-}
-
-@keyframes cellCurrent {
-  0% { box-shadow: 0 0 0 0 var(--primary);}
-  100% { box-shadow: 0 0 24px 8px var(--primary);}
-}
-.animate-current {
-  animation: cellCurrent 0.85s cubic-bezier(.66,0,.34,1) alternate infinite;
-}
-
-@keyframes winpop {
-  0% { transform: scale(0.5) rotate(-14deg); }
-  45% { transform: scale(1.2) rotate(13deg); }
-  90% { transform: scale(0.92); }
-  100% { transform: scale(1); }
-}
-.animate-winpop {
-  animation: winpop 1.18s forwards;
-}
-
-@keyframes failshake {
-  10%, 90% { transform: translateX(-1px); }
-  20%, 80% { transform: translateX(2px); }
-  30%, 50%, 70% { transform: translateX(-4px); }
-  40%, 60% { transform: translateX(4px); }
-}
-.animate-failshake {
-  animation: failshake 0.38s forwards;
-}
+/* ... rest of your CSS ... */

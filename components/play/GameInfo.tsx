@@ -1,3 +1,5 @@
+import React from "react";
+
 interface GameInfoProps {
   showVictory: boolean;
   showFailure: boolean;
@@ -24,21 +26,23 @@ export default function GameInfo({
         <span className="text-xs text-gray-500">Username: {user.username}</span>
       )}
       <span>Attempts: {attempts}</span>
-        {showVictory ? (
-          <span className="animate-winpop text-[var(--foreground)]">
-            🎉 You completed the Knight's Tour!
-          </span>
-        ) : showFailure ? (
-        <span className="text-[var(--primary)] animate-failshake">
+      {showVictory ? (
+        // Use a direct green hex code
+        <span className="animate-winpop text-[#10B981]">
+          🎉 You completed the Knight's Tour!
+        </span>
+      ) : showFailure ? (
+        // Use a direct red hex code
+        <span className="text-[#EF4444] animate-failshake">
           No more moves! Try again.
         </span>
       ) : !gameStarted ? (
         <>Click any square to start!</>
       ) : (
-        <>
-          Move: <span className="font-bold">{moveCount}</span> /{" "}
+        <div>
+          Move: <span className="font-bold">{moveCount}</span> / {""}
           {boardSize * boardSize}
-        </>
+        </div>
       )}
     </div>
   );

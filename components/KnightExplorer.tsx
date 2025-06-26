@@ -17,8 +17,8 @@ const OFFSETS: [number, number][] = [
 ];
 
 // CHESS COLORS
-const CHESS_LIGHT = "var(--background)";
-const CHESS_DARK = "var(--foreground)";
+const CHESS_LIGHT = "var(--background)"; // white
+const CHESS_DARK = "var(--foreground)"; // black
 
 // Timings
 const PREVIEW_MS = 1800;
@@ -56,7 +56,7 @@ export default function TutorialKnightMoves() {
   const [jumping, setJumping] = useState(false);
   const [animating, setAnimating] = useState(true);
 
-  const knightColor =
+  const knightPieceColor =
     (pos[0] + pos[1]) % 2 === 0 ? "var(--foreground)" : "var(--background)";
 
   const cycleRef = useRef(0);
@@ -160,9 +160,7 @@ export default function TutorialKnightMoves() {
     >
       <div
         className="text-base font-semibold mb-2"
-
         style={{ color: "var(--foreground)" }}
-
       >
         How does the Knight move?
       </div>
@@ -209,19 +207,19 @@ export default function TutorialKnightMoves() {
                       style={{
                         width: 36,
                         height: 36,
-                        background: `#fbbf2466`,
+                        background: `var(--secondary)`,
+                        opacity: 0.7,
                         position: "absolute",
                         left: 0,
                         top: 0,
                       }}
                     />
                     <span
-                      className="block rounded-full border-2"
+                      className="block rounded-full border-2 "
                       style={{
                         width: 27,
                         height: 27,
-                        borderColor: "#fbbf24",
-                        boxShadow: `0 0 16px 1px #fbbf2490`,
+                        borderColor: `var(--secondary)`,
                         position: "absolute",
                         left: 4.5,
                         top: 4.5,
@@ -240,7 +238,7 @@ export default function TutorialKnightMoves() {
                       style={{
                         width: 40,
                         height: 40,
-                        background: `#fbbf24cc`,
+                        background: `var(--secondary)`,
                         position: "absolute",
                         left: 0,
                         top: 0,
@@ -257,8 +255,8 @@ export default function TutorialKnightMoves() {
         <svg width="0" height="0">
           <defs>
             <linearGradient id="line-gradient" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0%" stopColor="#8b5cf6" />
-              <stop offset="100%" stopColor="#fbbf24" />
+              <stop offset="0%" stopColor="var(--primary)" />
+              <stop offset="100%" stopColor="var(--secondary)" />
             </linearGradient>
           </defs>
         </svg>
@@ -277,7 +275,7 @@ export default function TutorialKnightMoves() {
                 strokeLinejoin="round"
                 className="draw-thin-glow"
                 style={{
-                  filter: `drop-shadow(0 0 12px #8b5cf6) drop-shadow(0 0 6px #fbbf24)`,
+                  filter: `drop-shadow(0 0 8px var(--secondary))`,
                 }}
               />
             ))}
@@ -296,7 +294,7 @@ export default function TutorialKnightMoves() {
               strokeLinejoin="round"
               className="hop-glow"
               style={{
-                filter: `drop-shadow(0 0 20px #8b5cf6) drop-shadow(0 0 16px #fbbf24)`,
+                filter: `drop-shadow(0 0 12px var(--secondary))`,
               }}
             />
           </svg>
@@ -321,7 +319,7 @@ export default function TutorialKnightMoves() {
               (jumping ? "animate-jump" : "")
             }
             style={{
-              color: knightColor,
+              color: knightPieceColor,
               filter: "drop-shadow(0 2px 12px rgba(0,0,0,0.4))",
             }}
           >
@@ -335,14 +333,12 @@ export default function TutorialKnightMoves() {
         disabled={animating && !finished}
         className={`px-4 py-2 rounded-lg font-semibold mt-2 shadow transition ${
           animating && !finished
-            ? "bg-gray-400 text-white opacity-60 cursor-not-allowed"
-
-            : "bg-[var(--secondary)] text-[var(--foreground)] hover:brightness-110"
-
+            ? "bg-gray-400/50 text-white/60 cursor-not-allowed"
+            : "bg-[var(--surface)] text-[var(--foreground)] hover:bg-[var(--secondary)]"
         }`}
         style={{
           minWidth: 100,
-          border: `1.5px solid var(--primary)`,
+          border: `1.5px solid var(--secondary)`,
         }}
       >
         Replay
@@ -364,13 +360,16 @@ export default function TutorialKnightMoves() {
         }
         @keyframes shimmer {
           0% {
-            filter: drop-shadow(0 0 12px #8b5cf6) drop-shadow(0 0 4px #fbbf24);
+            filter: drop-shadow(0 0 8px var(--secondary));
+            opacity: 0.8;
           }
           50% {
-            filter: drop-shadow(0 0 16px #fbbf24) drop-shadow(0 0 7px #8b5cf6);
+            filter: drop-shadow(0 0 14px var(--secondary));
+            opacity: 1;
           }
           100% {
-            filter: drop-shadow(0 0 12px #8b5cf6) drop-shadow(0 0 4px #fbbf24);
+            filter: drop-shadow(0 0 8px var(--secondary));
+            opacity: 0.8;
           }
         }
         .hop-glow {
