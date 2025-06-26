@@ -42,7 +42,7 @@ export default function Square({
       className={`
         relative
         w-[90px] h-[90px]
-        border-0
+        border-none
         rounded-none
         overflow-hidden
         flex flex-col items-center justify-center

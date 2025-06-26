@@ -32,6 +32,10 @@ body {
   font-family: var(--font-sans), Arial, Helvetica, sans-serif;
 }
 
+button {
+  border: none;
+}
+
 @keyframes knightJump {
   0% { transform: scale(1) translateY(0);}
   25% { transform: scale(1.20) translateY(-22px) rotate(-12deg);}
