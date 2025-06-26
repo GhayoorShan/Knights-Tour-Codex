@@ -58,9 +58,9 @@ export default function GameBoard({
 
   const boardPx = boardSize * cellSize;
 
-  // Chessboard color palette: classic black and white
-  const chessLight = "#ffffff"; // white
-  const chessDark = "#000000"; // black
+  // Chessboard colors aligned with app theme
+  const chessLight = "var(--background)";
+  const chessDark = "var(--foreground)";
 
   return (
     <div

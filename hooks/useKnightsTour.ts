@@ -61,6 +61,7 @@ export function useKnightsTour(boardSize: number, user: User | null) {
 
   const [showVictory, setShowVictory] = useState(false);
   const [showFailure, setShowFailure] = useState(false);
+  const [gameEnded, setGameEnded] = useState(false);
 
   const [knightAnim, setKnightAnim] = useState<{ row: number; col: number } | null>(null);
   const animTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -191,7 +192,8 @@ export function useKnightsTour(boardSize: number, user: User | null) {
     setKnightAnim(null);
     setConfetti(false);
     setStartTime(null);
-    setRunSaved(false); 
+    setRunSaved(false);
+    setGameEnded(false);
   }
 
   useEffect(() => {
@@ -272,7 +274,8 @@ export function useKnightsTour(boardSize: number, user: User | null) {
   const isStuck = gameStarted && !hasWon && validMoves.length === 0;
 
   useEffect(() => {
-    if ((hasWon && gameStarted && !showVictory) || (isStuck && !showFailure)) {
+    if (!gameEnded && ((hasWon && gameStarted) || isStuck)) {
+      setGameEnded(true);
       setConfetti(true);
       const particles: ConfettiParticle[] = Array.from({ length: 32 }).map((_, i) => ({
         left: 10 + i * 2.6 + (i % 3),
@@ -289,7 +292,7 @@ export function useKnightsTour(boardSize: number, user: User | null) {
         setShowVictory(true);
         if (!runSaved) {
           saveRun();
-          setRunSaved(true); // <--- prevents multiple saves!
+          setRunSaved(true);
         }
         setTimeout(() => setShowVictory(false), 1500);
       }
@@ -299,7 +302,7 @@ export function useKnightsTour(boardSize: number, user: User | null) {
       }
       setTimeout(() => setConfetti(false), 1400);
     }
-  }, [hasWon, gameStarted, showVictory, isStuck, showFailure, runSaved, saveRun]);
+  }, [hasWon, gameStarted, isStuck, runSaved, saveRun, gameEnded]);
 
   // --- When boardSize/user changes, load current attempts ---
   useEffect(() => {
