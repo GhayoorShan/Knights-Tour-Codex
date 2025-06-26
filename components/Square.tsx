@@ -1,5 +1,4 @@
 "use client";
-import { useEffect, useState } from "react";
 
 interface SquareProps {
   isKnight: boolean;
@@ -24,18 +23,6 @@ export default function Square({
   isCurrent,
   squareColor,
 }: SquareProps) {
-  // Handle one-time pulse for destinations
-  const [pulseOnce, setPulseOnce] = useState(false);
-
-  useEffect(() => {
-    if (isValidMove) {
-      setPulseOnce(true);
-      const t = setTimeout(() => setPulseOnce(false), 700);
-      return () => clearTimeout(t);
-    } else {
-      setPulseOnce(false);
-    }
-  }, [isValidMove]);
 
   return (
     <button
@@ -48,7 +35,7 @@ export default function Square({
         flex flex-col items-center justify-center
         transition-transform
         hover:scale-[1.04]
-        ${pulseOnce && !isKnight ? "animate-pulse-ring-once" : ""}
+        ${isValidMove && !isKnight ? "animate-pulse-ring" : ""}
         ${cellEffect}
       `}
       style={{
@@ -67,7 +54,10 @@ export default function Square({
         <span
           className="text-xl font-bold select-none"
           style={{
-            color: squareColor === "#000000" ? "#ffffff" : "#000000",
+            color:
+              squareColor === "var(--foreground)"
+                ? "var(--background)"
+                : "var(--foreground)",
           }}
         >
           {moveNum}
