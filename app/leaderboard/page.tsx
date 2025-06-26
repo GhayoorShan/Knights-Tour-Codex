@@ -42,7 +42,7 @@ export default function LeaderboardPage() {
       </div>
 
       {/* ─── Table ───────────────────────────────────────────────────── */}
-      <div className="bg-white/90 text-black rounded-2xl border border-[color:var(--primary)/0.2] shadow-lg p-8 w-full max-w-2xl">
+      <div className="bg-[var(--surface)] text-[var(--foreground)] rounded-2xl border border-[var(--primary)/0.2] shadow-lg p-8 w-full max-w-2xl">
         <table className="w-full text-lg">
           <thead>
             <tr className="text-left border-b">
@@ -71,7 +71,7 @@ export default function LeaderboardPage() {
             )}
             {!loading &&
               records.map((rec, idx) => (
-                <tr key={rec.id} className="border-b hover:bg-gray-50">
+                <tr key={rec.id} className="border-b hover:bg-[var(--surface)]">
                   <td className="py-2">{idx + 1}</td>
                   <td className="py-2">{rec.name}</td>
                   <td className="py-2">

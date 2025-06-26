@@ -17,8 +17,8 @@ const OFFSETS: [number, number][] = [
 ];
 
 // CHESS COLORS
-const CHESS_LIGHT = "#fff";
-const CHESS_DARK = "#000";
+const CHESS_LIGHT = "var(--background)";
+const CHESS_DARK = "var(--foreground)";
 
 // Timings
 const PREVIEW_MS = 1800;
@@ -55,6 +55,9 @@ export default function TutorialKnightMoves() {
   const [finished, setFinished] = useState(false);
   const [jumping, setJumping] = useState(false);
   const [animating, setAnimating] = useState(true);
+
+  const knightColor =
+    (pos[0] + pos[1]) % 2 === 0 ? "var(--foreground)" : "var(--background)";
 
   const cycleRef = useRef(0);
   const timers = useRef<NodeJS.Timeout[]>([]);
@@ -149,15 +152,15 @@ export default function TutorialKnightMoves() {
     <div
       className="flex flex-col items-center gap-4 p-5 rounded-2xl shadow-xl select-none min-w-[330px]"
       style={{
-        background: "#222", // or keep your theme color
-        color: "#fff",
-        border: `1.5px solid #b5886390`,
-        boxShadow: `0 4px 16px #b5886360`,
+        background: "var(--surface)",
+        color: "var(--foreground)",
+        border: `1.5px solid var(--primary)`,
+        boxShadow: `0 4px 16px rgba(0,0,0,0.2)`,
       }}
     >
       <div
         className="text-base font-semibold mb-2"
-        style={{ color: "#b58863" }}
+        style={{ color: "var(--foreground)" }}
       >
         How does the Knight move?
       </div>
@@ -167,7 +170,7 @@ export default function TutorialKnightMoves() {
         style={{
           width: CELL * GRID,
           height: CELL * GRID,
-          border: `2.5px solid #b5886370`,
+          border: `2.5px solid var(--primary)`,
         }}
       >
         {/* squares */}
@@ -316,8 +319,8 @@ export default function TutorialKnightMoves() {
               (jumping ? "animate-jump" : "")
             }
             style={{
-              color: "#8b5cf6",
-              filter: `drop-shadow(0 2px 12px #fbbf2499)`,
+              color: knightColor,
+              filter: "drop-shadow(0 2px 12px rgba(0,0,0,0.4))",
             }}
           >
             <KnightIcon className="w-14 h-14" />
@@ -331,11 +334,11 @@ export default function TutorialKnightMoves() {
         className={`px-4 py-2 rounded-lg font-semibold mt-2 shadow transition ${
           animating && !finished
             ? "bg-gray-400 text-white opacity-60 cursor-not-allowed"
-            : "bg-[#8b5cf6] text-white hover:bg-[#fbbf24] hover:text-[#0f172a]"
+            : "bg-[var(--secondary)] text-[var(--foreground)] hover:brightness-110"
         }`}
         style={{
           minWidth: 100,
-          border: `1.5px solid #b5886355`,
+          border: `1.5px solid var(--primary)`,
         }}
       >
         Replay
