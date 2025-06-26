@@ -18,14 +18,11 @@ export const SOLUTIONS: Record<number, number[][]> = {
 };
 
 const CONFETTI_COLORS = [
-  "#8b5cf6",
-  "#fbbf24",
+  "#000000",
+  "#444444",
+  "#888888",
+  "#bbbbbb",
   "#ffffff",
-  "#4f46e5",
-  "#f472b6",
-  "#22d3ee",
-  "#4ade80",
-  "#64748b",
 ];
 
 function getKnightMoves(pos: Position, boardSize: number): Position[] {
@@ -212,7 +209,22 @@ export function useKnightsTour(boardSize: number, user: User | null) {
   function handleShowSolution() {
     setShowingSolution(true);
     setSolutionStep(1);
-    setKnightPos(null);
+    if (boardSize === 5) {
+      // Position knight on the first move of the predefined solution
+      let start: Position | null = null;
+      for (let i = 0; i < boardSize; i++) {
+        for (let j = 0; j < boardSize; j++) {
+          if (SOLUTIONS[5][i][j] === 1) {
+            start = { row: i, col: j };
+            break;
+          }
+        }
+        if (start) break;
+      }
+      setKnightPos(start);
+    } else {
+      setKnightPos(null);
+    }
     setVisited(Array.from({ length: boardSize }, () => Array(boardSize).fill(0)));
     setGameStarted(false);
     setMoveCount(0);
