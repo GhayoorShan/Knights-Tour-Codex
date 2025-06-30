@@ -80,11 +80,8 @@ export default function GameBoard({
           "0 4px 10px rgba(0,0,0,0.1), inset 0 0 8px rgba(255,255,255,0.1)",
       }}
     >
-      {/* Mode toggle */}
-      <div className="mb-4 flex items-center gap-3">
-        <span className="text-[var(--foreground)] font-semibold text-sm">
-          Normal Mode
-        </span>
+      <div className="mb-4 flex items-center gap-3 text-black">
+        <span className="text-black font-semibold text-sm">Normal Mode</span>
         <label className="relative inline-flex items-center cursor-pointer">
           <input
             type="checkbox"
@@ -92,11 +89,27 @@ export default function GameBoard({
             checked={isChessMode}
             onChange={toggleBoardMode}
           />
-          <div className="w-11 h-6 bg-[var(--secondary)] rounded-full peer peer-focus:ring-2 peer-focus:ring-[var(--primary)] peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border after:border-gray-300 after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[var(--primary)]"></div>
+          {/* Track */}
+          <div className="w-11 h-6 bg-black peer-checked:bg-white rounded-full transition-colors duration-200 border-2 border-black" />
+          {/* Thumb */}
+          <span
+            className={`
+        absolute top-0 left-0
+        w-6 h-6 rounded-full
+        transition-all duration-200
+        flex items-center justify-center
+        shadow-[0_2px_8px_rgba(0,0,0,0.14)]
+        border-2
+        ${
+          isChessMode
+            ? "bg-black border-black translate-x-5"
+            : "bg-white border-black translate-x-0"
+        }
+      `}
+            style={{ pointerEvents: "none" }}
+          />
         </label>
-        <span className="text-[var(--foreground)] font-semibold text-sm">
-          Chess Mode
-        </span>
+        <span className="font-semibold text-sm text-black">Chess Mode</span>
       </div>
 
       {/* Board grid (this is now the positioning context for the knight) */}
