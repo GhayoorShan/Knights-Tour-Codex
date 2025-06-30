@@ -16,13 +16,13 @@ export function AnimatedKnight({
   moveNum: number;
   isChessMode: boolean;
 }) {
-  // Icon & number color: always black in Normal mode; else contrast
+  // Icon & number color: follow theme foreground in Normal mode; else contrast
   const iconColor = !isChessMode
-    ? "#000000"
+    ? "var(--foreground)"
     : (row + col) % 2 === 0
     ? "var(--foreground)"
     : "var(--background)";
-  const numColor = !isChessMode ? "#000000" : iconColor;
+  const numColor = !isChessMode ? "var(--foreground)" : iconColor;
 
   return (
     <div
