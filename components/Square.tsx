@@ -33,14 +33,14 @@ export default function Square({
     finalBackgroundColor = squareColor;
   }
 
-  // Only top + left borders in Normal mode
+  // Add a border around each square in Normal mode
   const borderClass = isChessMode
     ? ""
-    : "border-t border-l border-[var(--secondary)]";
+    : "border border-[var(--secondary)]";
 
-  // Font color: always black (#000) in Normal mode; else contrast
+  // Font color: follow theme foreground in Normal mode; else contrast
   const numberColor = !isChessMode
-    ? "#000000"
+    ? "var(--foreground)"
     : squareColor === "var(--foreground)"
     ? "var(--background)"
     : "var(--foreground)";
