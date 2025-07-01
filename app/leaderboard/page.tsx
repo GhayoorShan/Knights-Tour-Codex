@@ -5,8 +5,18 @@ import { supabase } from "@/lib/supabase";
 import { useRouter } from "next/navigation";
 import { formatSecondsToMinutesAndSeconds } from "@/utils/timeUtils";
 
+interface LeaderboardRecord {
+  id: number;
+  user_id: string;
+  name: string;
+  moves: number;
+  time_seconds: number;
+  board_size: number;
+  attempts: number;
+}
+
 export default function LeaderboardPage() {
-  const [records, setRecords] = useState<any[]>([]);
+  const [records, setRecords] = useState<LeaderboardRecord[]>([]);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
 

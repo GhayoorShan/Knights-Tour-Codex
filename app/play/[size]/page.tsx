@@ -13,13 +13,6 @@ import KnightExplorer from "@/components/KnightExplorer"; // This is your Knight
 
 export default function PlayPage() {
   const params = useParams<{ size: string }>();
-  const [usernamePrompt, setUsernamePrompt] = useState(false);
-  const { user, setUsername } = useUser();
-
-  useEffect(() => {
-    if (!user || !user.username) setUsernamePrompt(true);
-    else setUsernamePrompt(false);
-  }, [user]);
 
   if (!params.size) {
     return (
@@ -29,8 +22,20 @@ export default function PlayPage() {
     );
   }
 
-  const [rows, cols] = params.size.split("x").map((n) => parseInt(n, 10));
+  const [rows] = params.size.split("x").map((n) => parseInt(n, 10));
   const boardSize = rows;
+
+  return <PlayPageInner boardSize={boardSize} />;
+}
+
+function PlayPageInner({ boardSize }: { boardSize: number }) {
+  const [usernamePrompt, setUsernamePrompt] = useState(false);
+  const { user, setUsername } = useUser();
+
+  useEffect(() => {
+    if (!user || !user.username) setUsernamePrompt(true);
+    else setUsernamePrompt(false);
+  }, [user]);
 
   const [cellSize, setCellSize] = useState(85);
   useEffect(() => {
@@ -66,7 +71,6 @@ export default function PlayPage() {
     handleReset,
     attempts,
     winTimeSeconds,
-    saveRun,
   } = useKnightsTour(boardSize, user);
 
   if (usernamePrompt) {
@@ -79,7 +83,7 @@ export default function PlayPage() {
       <div className="relative w-full flex flex-col items-center bg-[var(--primary)] text-[var(--background)] py-6 shadow-md mb-8 rounded-b-3xl">
         <div className="text-center flex flex-col items-center gap-1">
           <span className="font-bold text-2xl sm:text-4xl tracking-tight text-[var(--background)] drop-shadow-xl">
-            ♞ Knight's Tour Challenge
+            ♞ Knight&apos;s Tour Challenge
           </span>
           <span className="mt-1 text-base sm:text-lg opacity-80 font-medium">
             Visit every square exactly once!

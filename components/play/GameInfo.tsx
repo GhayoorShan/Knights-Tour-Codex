@@ -29,7 +29,7 @@ export default function GameInfo({
       {showVictory ? (
         // Use a direct green hex code
         <span className="animate-winpop text-[#10B981]">
-          🎉 You completed the Knight's Tour!
+          🎉 You completed the Knight&apos;s Tour!
         </span>
       ) : showFailure ? (
         // Use a direct red hex code
