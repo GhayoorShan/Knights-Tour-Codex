@@ -16,9 +16,9 @@ const OFFSETS: [number, number][] = [
   [2, -1],
 ];
 
-// CHESS COLORS
-const CHESS_LIGHT = "var(--background)"; // white
-const CHESS_DARK = "var(--foreground)"; // black
+// Chess pure colors
+const CHESS_LIGHT = "#fff";
+const CHESS_DARK = "#111";
 
 // Timings
 const PREVIEW_MS = 1800;
@@ -57,7 +57,7 @@ export default function TutorialKnightMoves() {
   const [animating, setAnimating] = useState(true);
 
   const knightPieceColor =
-    (pos[0] + pos[1]) % 2 === 0 ? "var(--foreground)" : "var(--background)";
+    (pos[0] + pos[1]) % 2 === 0 ? CHESS_DARK : CHESS_LIGHT; // invert for visibility
 
   const cycleRef = useRef(0);
   const timers = useRef<NodeJS.Timeout[]>([]);
@@ -150,33 +150,33 @@ export default function TutorialKnightMoves() {
 
   return (
     <div
-      className="flex flex-col items-center gap-4 p-5 rounded-2xl shadow-xl select-none min-w-[330px]"
+      className="flex flex-col items-center gap-4 p-5 shadow-xl select-none min-w-[330px]"
       style={{
-        background: "var(--surface)",
-        color: "var(--foreground)",
-        border: `1.5px solid var(--primary)`,
-        boxShadow: `0 4px 16px rgba(0,0,0,0.2)`,
+        background: "#fafafa",
+        color: "#222",
+        border: `1.5px solid #222`,
+        boxShadow: `0 4px 16px #1113`,
       }}
     >
-      <div
-        className="text-base font-semibold mb-2"
-        style={{ color: "var(--foreground)" }}
-      >
+      <div className="text-base font-semibold mb-2" style={{ color: "#222" }}>
         How does the Knight move?
       </div>
       {/* Board */}
       <div
-        className="relative rounded-lg overflow-hidden"
+        className="relative overflow-hidden"
         style={{
           width: CELL * GRID,
           height: CELL * GRID,
-          border: `2.5px solid var(--primary)`,
+          border: `2.5px solid #111`,
         }}
       >
         {/* squares */}
         <div
           className="grid"
-          style={{ gridTemplateColumns: `repeat(${GRID}, ${CELL}px)` }}
+          style={{
+            gridTemplateColumns: `repeat(${GRID}, ${CELL}px)`,
+            gridTemplateRows: `repeat(${GRID}, ${CELL}px)`,
+          }}
         >
           {Array.from({ length: GRID * GRID }).map((_, idx) => {
             const r = ~~(idx / GRID);
@@ -194,6 +194,7 @@ export default function TutorialKnightMoves() {
                   height: CELL,
                   background: even ? CHESS_LIGHT : CHESS_DARK,
                   position: "relative",
+                  transition: "background 0.22s",
                 }}
               >
                 {/* Preview destinations: glow ping */}
@@ -207,7 +208,7 @@ export default function TutorialKnightMoves() {
                       style={{
                         width: 36,
                         height: 36,
-                        background: `var(--secondary)`,
+                        background: "#fbbf24",
                         opacity: 0.7,
                         position: "absolute",
                         left: 0,
@@ -215,11 +216,11 @@ export default function TutorialKnightMoves() {
                       }}
                     />
                     <span
-                      className="block rounded-full border-2 "
+                      className="block rounded-full border-2"
                       style={{
                         width: 27,
                         height: 27,
-                        borderColor: `var(--secondary)`,
+                        borderColor: "#fbbf24",
                         position: "absolute",
                         left: 4.5,
                         top: 4.5,
@@ -238,7 +239,7 @@ export default function TutorialKnightMoves() {
                       style={{
                         width: 40,
                         height: 40,
-                        background: `var(--secondary)`,
+                        background: "#fbbf24",
                         position: "absolute",
                         left: 0,
                         top: 0,
@@ -255,8 +256,8 @@ export default function TutorialKnightMoves() {
         <svg width="0" height="0">
           <defs>
             <linearGradient id="line-gradient" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0%" stopColor="var(--primary)" />
-              <stop offset="100%" stopColor="var(--secondary)" />
+              <stop offset="0%" stopColor="#111" />
+              <stop offset="100%" stopColor="#fbbf24" />
             </linearGradient>
           </defs>
         </svg>
@@ -275,7 +276,7 @@ export default function TutorialKnightMoves() {
                 strokeLinejoin="round"
                 className="draw-thin-glow"
                 style={{
-                  filter: `drop-shadow(0 0 8px var(--secondary))`,
+                  filter: `drop-shadow(0 0 8px #fbbf24)`,
                 }}
               />
             ))}
@@ -294,7 +295,7 @@ export default function TutorialKnightMoves() {
               strokeLinejoin="round"
               className="hop-glow"
               style={{
-                filter: `drop-shadow(0 0 12px var(--secondary))`,
+                filter: `drop-shadow(0 0 12px #fbbf24)`,
               }}
             />
           </svg>
@@ -323,7 +324,7 @@ export default function TutorialKnightMoves() {
               filter: "drop-shadow(0 2px 12px rgba(0,0,0,0.4))",
             }}
           >
-            <KnightIcon className="w-14 h-14" />
+            <KnightIcon className="w-16 h-16" />
           </div>
         </div>
       </div>
@@ -331,14 +332,14 @@ export default function TutorialKnightMoves() {
       <button
         onClick={replay}
         disabled={animating && !finished}
-        className={`px-4 py-2 rounded-lg font-semibold mt-2 shadow transition ${
+        className={`px-4 py-2 rounded font-semibold mt-2 shadow transition ${
           animating && !finished
             ? "bg-gray-400/50 text-white/60 cursor-not-allowed"
-            : "bg-[var(--surface)] text-[var(--foreground)] hover:bg-[var(--secondary)]"
+            : "bg-[#222] text-white hover:bg-[#fbbf24] hover:text-[#111]"
         }`}
         style={{
           minWidth: 100,
-          border: `1.5px solid var(--secondary)`,
+          border: `1.5px solid #fbbf24`,
         }}
       >
         Replay
@@ -360,15 +361,15 @@ export default function TutorialKnightMoves() {
         }
         @keyframes shimmer {
           0% {
-            filter: drop-shadow(0 0 8px var(--secondary));
+            filter: drop-shadow(0 0 8px #fbbf24);
             opacity: 0.8;
           }
           50% {
-            filter: drop-shadow(0 0 14px var(--secondary));
+            filter: drop-shadow(0 0 14px #fbbf24);
             opacity: 1;
           }
           100% {
-            filter: drop-shadow(0 0 8px var(--secondary));
+            filter: drop-shadow(0 0 8px #fbbf24);
             opacity: 0.8;
           }
         }
