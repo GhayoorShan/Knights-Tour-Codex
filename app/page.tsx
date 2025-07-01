@@ -17,7 +17,7 @@ export default function HomePage() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-br from-[var(--surface)] to-[var(--background)] text-[var(--foreground)]">
       <h1 className="text-4xl font-bold mb-8 text-[var(--primary)]">
-        Knight's Tour Challenge
+        Knight&apos;s Tour Challenge
       </h1>
       <form
         onSubmit={handleSubmit}
