@@ -68,7 +68,7 @@ export default function GameBoard({
 
   return (
     <div
-      className="relative rounded-3xl border-[2.5px] border-[var(--primary)]/30 flex flex-col items-center justify-center mx-8"
+      className="relative rounded-3xl border-[2.5px] border-[var(--primary)]/30 flex flex-col items-center justify-center mx-4 sm:mx-8"
       style={{
         padding: 30,
         margin: 20,

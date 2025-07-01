@@ -31,7 +31,19 @@ export default function PlayPage() {
 
   const [rows, cols] = params.size.split("x").map((n) => parseInt(n, 10));
   const boardSize = rows;
-  const CELL_SIZE = 85;
+
+  const [cellSize, setCellSize] = useState(85);
+  useEffect(() => {
+    function updateSize() {
+      const w = window.innerWidth;
+      if (w < 640) setCellSize(40);
+      else if (w < 1024) setCellSize(70);
+      else setCellSize(100);
+    }
+    updateSize();
+    window.addEventListener("resize", updateSize);
+    return () => window.removeEventListener("resize", updateSize);
+  }, []);
 
   const {
     knightPos,
@@ -75,7 +87,7 @@ export default function PlayPage() {
         </div>
       </div>
 
-      <div className="flex flex-row items-start gap-10">
+      <div className="flex flex-col lg:flex-row items-start gap-6 sm:gap-10">
         {/* Left: Game board and controls */}
         <div
           className="flex flex-col items-center bg-white/95 rounded-3xl p-6 sm:p-12 mt-2 max-w-fit border-[var(--foreground)]/20 border-[2.5px]"
@@ -98,7 +110,7 @@ export default function PlayPage() {
           />
           <GameBoard
             boardSize={boardSize}
-            cellSize={CELL_SIZE}
+            cellSize={cellSize}
             visited={visited}
             knightPos={knightPos}
             showingSolution={showingSolution}

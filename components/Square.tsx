@@ -63,6 +63,7 @@ export default function Square({
         transition-transform
         hover:scale-[1.04]
         ${borderClass}
+        $
       `}
       style={{
         background: finalBackgroundColor,
@@ -75,10 +76,10 @@ export default function Square({
     >
       {!isKnight && isVisited && !isDestination && (
         <span
-          className="text-xl font-bold select-none"
+          className="text-xl font-bold select-none "
           style={{ color: numberColor }}
         >
-          {moveNum}
+          {moveNum > 0 ? moveNum : ""}
         </span>
       )}
     </button>
