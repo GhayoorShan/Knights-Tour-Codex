@@ -9,7 +9,7 @@ import UserNamePrompt from "@/components/play/UserNamePrompt";
 import { useKnightsTour, SOLUTIONS } from "@/hooks/useKnightsTour";
 import { useUser } from "@/hooks/useUser";
 import Link from "next/link";
-import KnightExplorer from "@/components/KnightExplorer"; // This is your KnightExplorer
+import KnightExplorer from "@/components/KnightExplorer";
 
 export default function PlayPage() {
   const params = useParams<{ size: string }>();
@@ -30,12 +30,14 @@ export default function PlayPage() {
 
 function PlayPageInner({ boardSize }: { boardSize: number }) {
   const [usernamePrompt, setUsernamePrompt] = useState(false);
-  const { user, setUsername } = useUser();
+  const { user, setUsername, loading } = useUser(); // <- now with loading
 
   useEffect(() => {
-    if (!user || !user.username) setUsernamePrompt(true);
-    else setUsernamePrompt(false);
-  }, [user]);
+    if (!loading) {
+      if (!user || !user.username) setUsernamePrompt(true);
+      else setUsernamePrompt(false);
+    }
+  }, [user, loading]);
 
   const [cellSize, setCellSize] = useState(85);
   useEffect(() => {
@@ -72,6 +74,15 @@ function PlayPageInner({ boardSize }: { boardSize: number }) {
     attempts,
     winTimeSeconds,
   } = useKnightsTour(boardSize, user);
+
+  // ----- NEW: show loader while user-check is happening
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center text-xl bg-black text-white">
+        Loading...
+      </div>
+    );
+  }
 
   if (usernamePrompt) {
     return <UserNamePrompt onSave={(user) => setUsername(user.username)} />;

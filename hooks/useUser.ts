@@ -5,6 +5,7 @@ export type User = { user_id: string; username: string };
 
 export function useUser() {
   const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true); // ADD loading
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -14,7 +15,10 @@ export function useUser() {
       fetchGuestUserFromDB(user_id).then((data) => {
         if (data) setUser({ user_id, username: data.name });
         else setUser(null); // Not found in DB, force prompt
+        setLoading(false); // Done loading!
       });
+    } else {
+      setLoading(false); // Done loading even if no user
     }
   }, []);
 
@@ -25,5 +29,5 @@ export function useUser() {
     setUser({ user_id, username: name });
   }
 
-  return { user, setUsername };
+  return { user, setUsername, loading };
 }
